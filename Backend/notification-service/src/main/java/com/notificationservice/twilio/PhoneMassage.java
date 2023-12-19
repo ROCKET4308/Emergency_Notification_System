@@ -11,12 +11,12 @@ public class PhoneMassage {
     public static final String ACCOUNT_SID = System.getenv("TWILIO_ACCOUNT_SID");
     public static final String AUTH_TOKEN = System.getenv("TWILIO_AUTH_TOKEN");
 
-    public static void sentMassage() {
+    public static void sentMassage(String massageText, String recipientNumber) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message message = Message.creator(
-                        new com.twilio.type.PhoneNumber("+15558675310"),
+                        new com.twilio.type.PhoneNumber(recipientNumber),
                         new com.twilio.type.PhoneNumber("+15017122661"),
-                        "Hi there")
+                        massageText)
                 .create();
 
         System.out.println(message.getSid());
