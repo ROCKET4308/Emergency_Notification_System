@@ -11,10 +11,10 @@ public class Massager {
     private final TwilioConfigProperties twilioConfigProperties;
 
     public void sentPhoneMassage(String massageText, String recipientNumber) {
-        Twilio.init(twilioConfigProperties.ACCOUNT_SID(), twilioConfigProperties.AUTH_TOKEN());
+        Twilio.init(twilioConfigProperties.account_sid(), twilioConfigProperties.auth_token());
         Message message = Message.creator(
                         new com.twilio.type.PhoneNumber(recipientNumber),
-                        new com.twilio.type.PhoneNumber(twilioConfigProperties.PHONE_NUMBER()),
+                        new com.twilio.type.PhoneNumber(twilioConfigProperties.phone_number()),
                         massageText)
                 .create();
 
