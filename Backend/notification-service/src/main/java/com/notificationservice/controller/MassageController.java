@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 public class MassageController {
     private final MessageService massageService;
 
-    @PostMapping("email")
+    @PostMapping("phone")
     @ResponseStatus(HttpStatus.OK)
-    public String sendEmail(@RequestBody MassageRequest massageRequest){
-        return massageService.sendEmail(massageRequest);
+    public String sentPhoneMassage(@RequestBody MassageRequest massageRequest){
+        return massageService.sentPhoneMassage(massageRequest);
     }
 }
