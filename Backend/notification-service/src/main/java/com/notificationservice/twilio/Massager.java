@@ -17,7 +17,6 @@ public class Massager {
                         new com.twilio.type.PhoneNumber(twilioConfigProperties.phone_number()),
                         massageText)
                 .create();
-
         System.out.println(message.getSid());
     }
 }
