@@ -33,3 +33,4 @@ build/
 .vscode/
 
 secrets.yml
+application.yml
