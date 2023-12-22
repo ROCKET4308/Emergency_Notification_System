@@ -17,4 +17,10 @@ public class MassageController {
     public String sentPhoneMassage(@RequestBody MassageRequest massageRequest){
         return massageService.sentPhoneMassage(massageRequest);
     }
+
+    @PostMapping("mail")
+    @ResponseStatus(HttpStatus.OK)
+    public String sentMailMassage(@RequestBody MassageRequest massageRequest){
+        return massageService.sentMailMassage(massageRequest);
+    }
 }

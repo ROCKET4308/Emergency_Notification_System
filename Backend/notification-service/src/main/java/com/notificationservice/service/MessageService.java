@@ -19,4 +19,15 @@ public class MessageService {
         }
         return "Massage sent successfully";
     }
+
+    public String sentMailMassage(MassageRequest massageRequest) {
+        try {
+            for(String email : massageRequest.getContacts()){
+                massager.sentMailMassage(massageRequest.getMassageText(), email);
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return "Massage sent successfully";
+    }
 }
