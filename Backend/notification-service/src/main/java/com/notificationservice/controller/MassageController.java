@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("massage")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class MassageController {
     private final MessageService massageService;
 
