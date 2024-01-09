@@ -32,7 +32,7 @@ public class Massager {
                             new com.twilio.type.PhoneNumber(PHONE_NUMBER),
                             massageText)
                     .create();
-            System.out.println(message.getSid());
+            System.out.println("Message ID: " + message.getSid());
         }catch(Exception ex) { throw ex; }
     }
 
@@ -58,6 +58,8 @@ public class Massager {
             System.out.println(response.getStatusCode());
             System.out.println(response.getBody());
             System.out.println(response.getHeaders());
+            String messageId = response.getHeaders().get("X-Message-Id");
+            System.out.println("Message ID: " + messageId);
         } catch (IOException ex) { throw ex; }
     }
 }
