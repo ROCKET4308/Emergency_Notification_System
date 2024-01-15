@@ -24,7 +24,7 @@ public class Massager {
     @Value("${send_grid.api_key}")
     private String SEND_GRID_API_KEY;
 
-    public void sentPhoneMassage(String massageText, String recipientNumber){
+    public String sentPhoneMassage(String massageText, String recipientNumber){
         try {
             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
             Message message = Message.creator(
@@ -32,11 +32,13 @@ public class Massager {
                             new com.twilio.type.PhoneNumber(PHONE_NUMBER),
                             massageText)
                     .create();
-            System.out.println("Message ID: " + message.getSid());
+            String messageId = message.getSid();
+            System.out.println("Message ID: " + messageId);
+            return messageId;
         }catch(Exception ex) { throw ex; }
     }
 
-    public void sentMailMassage(String massageText, String recipientMail) throws IOException {
+    public String sentMailMassage(String massageText, String recipientMail) throws IOException {
             Email from = new Email("mhaplanov@gmail.com");
             Email to = new Email(recipientMail);
             String subject = "Emergency Notification";
@@ -55,11 +57,9 @@ public class Massager {
             request.setEndpoint("/mail/send");
             request.setBody(mail.build());
             Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
             String messageId = response.getHeaders().get("X-Message-Id");
             System.out.println("Message ID: " + messageId);
+            return messageId;
         } catch (IOException ex) { throw ex; }
     }
 }

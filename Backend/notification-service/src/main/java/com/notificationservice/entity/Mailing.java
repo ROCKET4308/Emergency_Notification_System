@@ -8,12 +8,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Mailing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String messageText;
+
+    public Mailing(String messageText) {
+        this.messageText = messageText;
+    }
 }
