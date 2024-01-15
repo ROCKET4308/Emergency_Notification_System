@@ -20,17 +20,4 @@ public class Massage {
     private String userContact;
     private String status;
     private String sentMassageId;
-
-    public Massage(Mailing mailing, String userContact, String status, String sentMassageId) {
-        this.mailing = mailing;
-        this.userContact = userContact;
-        this.status = status;
-        this.sentMassageId = sentMassageId;
-    }
-
-    public Massage(Mailing mailing, String userContact, String status) {
-        this.mailing = mailing;
-        this.userContact = userContact;
-        this.status = status;
-    }
 }
