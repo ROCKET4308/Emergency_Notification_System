@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("massage")
 @RequiredArgsConstructor
@@ -15,13 +17,13 @@ public class MassageController {
 
     @PostMapping("phone")
     @ResponseStatus(HttpStatus.OK)
-    public String sentPhoneMassage(@RequestBody MassageRequest massageRequest){
+    public Map<String, String> sentPhoneMassage(@RequestBody MassageRequest massageRequest){
         return massageService.sentPhoneMassage(massageRequest);
     }
 
     @PostMapping("mail")
     @ResponseStatus(HttpStatus.OK)
-    public String sentMailMassage(@RequestBody MassageRequest massageRequest){
+    public Map<String, String> sentMailMassage(@RequestBody MassageRequest massageRequest){
         return massageService.sentMailMassage(massageRequest);
     }
 }

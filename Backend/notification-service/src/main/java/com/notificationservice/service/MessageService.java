@@ -9,6 +9,9 @@ import com.notificationservice.twilio.Massager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class MessageService {
@@ -16,7 +19,8 @@ public class MessageService {
     private final MailingRepository mailingRepository;
     private final MassageRepository massageRepository;
 
-    public String sentPhoneMassage(MassageRequest massageRequest) {
+    public Map<String, String> sentPhoneMassage(MassageRequest massageRequest) {
+        Map<String, String> deliveryStatusMap = new HashMap<>();
         try {
             Mailing mailing = new Mailing(massageRequest.getMassageText());
             mailingRepository.save(mailing);
@@ -28,21 +32,23 @@ public class MessageService {
                      massage.setUserContact(phoneNumber);
                      massage.setStatus("Delivered");
                      massage.setSentMassageId(messageId);
+                     deliveryStatusMap.put(phoneNumber, "Delivered");
                 }else{
                     massage.setMailing(mailing);
                     massage.setUserContact(phoneNumber);
                     massage.setStatus("Not Delivered");
+                    deliveryStatusMap.put(phoneNumber, "Not Delivered");
                 }
                 massageRepository.save(massage);
             }
         }catch (Exception e){
             System.out.println(e);
         }
-        //TODO: return list of number with there delivery status
-        return "Massage sent";
+        return deliveryStatusMap;
     }
 
-    public String sentMailMassage(MassageRequest massageRequest) {
+    public Map<String, String> sentMailMassage(MassageRequest massageRequest) {
+        Map<String, String> deliveryStatusMap = new HashMap<>();
         try {
             Mailing mailing = new Mailing(massageRequest.getMassageText());
             mailingRepository.save(mailing);
@@ -54,17 +60,18 @@ public class MessageService {
                     massage.setUserContact(email);
                     massage.setStatus("Delivered");
                     massage.setSentMassageId(messageId);
+                    deliveryStatusMap.put(email, "Delivered");
                 }else{
                     massage.setMailing(mailing);
                     massage.setUserContact(email);
                     massage.setStatus("Not Delivered");
+                    deliveryStatusMap.put(email, "Not Delivered");
                 }
                 massageRepository.save(massage);
             }
         }catch (Exception e){
             System.out.println(e);
         }
-        //TODO: return list of number with there delivery status
-        return "Massage sent";
+        return deliveryStatusMap;
     }
 }
