@@ -15,9 +15,8 @@ public class Massage {
     @Id
     @GeneratedValue
     private  Integer id;
-    @ManyToOne
-    private Mailing mailing;
-    private String userContact;
+    private String messageText;
+    private String recipientContact;
     private String status;
     private String sentMassageId;
 }
