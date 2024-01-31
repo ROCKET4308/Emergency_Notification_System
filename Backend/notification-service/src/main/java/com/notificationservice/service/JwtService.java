@@ -1,4 +1,4 @@
-package com.notificationservice.config;
+package com.notificationservice.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

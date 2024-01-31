@@ -1,5 +1,9 @@
-package com.notificationservice.auth;
+package com.notificationservice.controller;
 
+import com.notificationservice.request.AuthenticationRequest;
+import com.notificationservice.response.AuthenticationResponse;
+import com.notificationservice.service.AuthenticationService;
+import com.notificationservice.request.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

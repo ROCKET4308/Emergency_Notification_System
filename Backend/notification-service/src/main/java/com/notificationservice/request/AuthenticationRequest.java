@@ -1,4 +1,4 @@
-package com.notificationservice.auth;
+package com.notificationservice.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

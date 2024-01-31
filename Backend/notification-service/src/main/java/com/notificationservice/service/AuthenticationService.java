@@ -1,9 +1,11 @@
-package com.notificationservice.auth;
+package com.notificationservice.service;
 
-import com.notificationservice.config.JwtService;
+import com.notificationservice.response.AuthenticationResponse;
+import com.notificationservice.request.RegisterRequest;
 import com.notificationservice.entity.Role;
 import com.notificationservice.entity.User;
 import com.notificationservice.repository.UserRepository;
+import com.notificationservice.request.AuthenticationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
