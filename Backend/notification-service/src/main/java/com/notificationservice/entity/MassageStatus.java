@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Massage {
+public class MassageStatus{
     @Id
     @GeneratedValue
     private  Integer id;
+    @ManyToOne
+    private User userId;
     private String messageText;
     private String recipientContact;
     private String status;

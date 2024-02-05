@@ -15,6 +15,8 @@ import java.util.Map;
 public class MassageController {
     private final MessageService massageService;
 
+    //TODO: change phone and mail controller into sent controller
+
     @PostMapping("phone")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> sentPhoneMassage(@RequestBody MassageRequest massageRequest){

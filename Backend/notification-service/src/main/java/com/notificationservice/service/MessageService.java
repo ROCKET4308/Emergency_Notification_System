@@ -1,7 +1,7 @@
 package com.notificationservice.service;
 
-import com.notificationservice.entity.Massage;
-import com.notificationservice.repository.MassageRepository;
+import com.notificationservice.entity.MassageStatus;
+import com.notificationservice.repository.MassageStatusRepository;
 import com.notificationservice.request.MassageRequest;
 import com.notificationservice.twilio.Massager;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +14,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MessageService {
     private final Massager massager;
-    private final MassageRepository massageRepository;
+    private final MassageStatusRepository massageStatusRepository;
+
+    //TODO: Make function to automatically detect is mail or phone massage
+
 
     public Map<String, String> sentPhoneMassage(MassageRequest massageRequest) {
         Map<String, String> deliveryStatusMap = new HashMap<>();
         try {
             for(String phoneNumber : massageRequest.getContacts()){
                 String messageId =  massager.sentPhoneMassage(massageRequest.getMassageText(), phoneNumber);
-                Massage massage = new Massage();
+                MassageStatus massage = new MassageStatus();
                 if(messageId.length() == 34){
                      massage.setMessageText(massageRequest.getMassageText());
                      massage.setRecipientContact(phoneNumber);
@@ -34,7 +37,7 @@ public class MessageService {
                     massage.setStatus("Not Delivered");
                     deliveryStatusMap.put(phoneNumber, "Not Delivered");
                 }
-                massageRepository.save(massage);
+                massageStatusRepository.save(massage);
             }
         }catch (Exception e){
             System.out.println(e);
@@ -47,7 +50,7 @@ public class MessageService {
         try {
             for(String email : massageRequest.getContacts()){
                 String messageId = massager.sentMailMassage(massageRequest.getMassageText(), email);
-                Massage massage = new Massage();
+                MassageStatus massage = new MassageStatus();
                 if(messageId.length() == 22){
                     massage.setMessageText(massageRequest.getMassageText());
                     massage.setRecipientContact(email);
@@ -60,7 +63,7 @@ public class MessageService {
                     massage.setStatus("Not Delivered");
                     deliveryStatusMap.put(email, "Not Delivered");
                 }
-                massageRepository.save(massage);
+                massageStatusRepository.save(massage);
             }
         }catch (Exception e){
             System.out.println(e);
