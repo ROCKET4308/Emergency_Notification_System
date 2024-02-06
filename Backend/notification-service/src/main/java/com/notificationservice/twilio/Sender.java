@@ -25,17 +25,15 @@ public class Sender {
     private String SEND_GRID_API_KEY;
 
     public String sentPhoneMessage(String messageText, String recipientNumber){
-        try {
-            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-            Message message = Message.creator(
-                            new com.twilio.type.PhoneNumber(recipientNumber),
-                            new com.twilio.type.PhoneNumber(PHONE_NUMBER),
-                            messageText)
-                    .create();
-            String messageId = message.getSid();
-            System.out.println("Message ID: " + messageId);
-            return messageId;
-        }catch(Exception ex) { throw ex; }
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Message message = Message.creator(
+                        new com.twilio.type.PhoneNumber(recipientNumber),
+                        new com.twilio.type.PhoneNumber(PHONE_NUMBER),
+                        messageText)
+                .create();
+        String messageId = message.getSid();
+        System.out.println("Message ID: " + messageId);
+        return messageId;
     }
 
     public String sentMailMessage(String messageText, String recipientMail) throws IOException {
@@ -52,14 +50,12 @@ public class Sender {
             SendGrid sg = new SendGrid(SEND_GRID_API_KEY);
             Request request = new Request();
 
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("/mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-            String messageId = response.getHeaders().get("X-Message-Id");
-            System.out.println("Message ID: " + messageId);
-            return messageId;
-        } catch (IOException ex) { throw ex; }
+        request.setMethod(Method.POST);
+        request.setEndpoint("/mail/send");
+        request.setBody(mail.build());
+        Response response = sg.api(request);
+        String messageId = response.getHeaders().get("X-Message-Id");
+        System.out.println("Message ID: " + messageId);
+        return messageId;
     }
 }

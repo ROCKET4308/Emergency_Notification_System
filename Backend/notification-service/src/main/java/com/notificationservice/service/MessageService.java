@@ -54,7 +54,7 @@ public class MessageService {
                 }
             messageStatusRepository.save(message);
         }catch (Exception e){
-            System.out.println(e);
+            throw new IllegalArgumentException(e);
         }
         return deliveryStatusMap;
     }
@@ -78,7 +78,7 @@ public class MessageService {
                 }
                 messageStatusRepository.save(message);
         }catch (Exception e){
-            System.out.println(e);
+            throw new IllegalArgumentException(e);
         }
         return deliveryStatusMap;
     }
