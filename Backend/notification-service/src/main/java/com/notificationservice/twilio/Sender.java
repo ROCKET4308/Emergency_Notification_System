@@ -10,7 +10,7 @@ import com.sendgrid.helpers.mail.objects.*;
 import java.io.IOException;
 
 @Component
-public class Massager {
+public class Sender {
 
     @Value("${twilio.account_sid}")
     private String ACCOUNT_SID;
@@ -24,13 +24,13 @@ public class Massager {
     @Value("${send_grid.api_key}")
     private String SEND_GRID_API_KEY;
 
-    public String sentPhoneMassage(String massageText, String recipientNumber){
+    public String sentPhoneMessage(String messageText, String recipientNumber){
         try {
             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
             Message message = Message.creator(
                             new com.twilio.type.PhoneNumber(recipientNumber),
                             new com.twilio.type.PhoneNumber(PHONE_NUMBER),
-                            massageText)
+                            messageText)
                     .create();
             String messageId = message.getSid();
             System.out.println("Message ID: " + messageId);
@@ -38,13 +38,13 @@ public class Massager {
         }catch(Exception ex) { throw ex; }
     }
 
-    public String sentMailMassage(String massageText, String recipientMail) throws IOException {
+    public String sentMailMessage(String messageText, String recipientMail) throws IOException {
             Email from = new Email("mhaplanov@gmail.com");
             Email to = new Email(recipientMail);
             String subject = "Emergency Notification";
             Content content = new Content(
                     "text/plain",
-                    massageText
+                    messageText
             );
 
             Mail mail = new Mail(from, subject, to, content);

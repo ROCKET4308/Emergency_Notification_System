@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MassageRequest {
-    private String massageText;
+public class MessageRequest {
+    private String messageText;
     private List<String> contacts;
 }

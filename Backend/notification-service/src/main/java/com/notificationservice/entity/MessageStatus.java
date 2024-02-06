@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class MassageTemplate {
+public class MessageStatus {
     @Id
     @GeneratedValue
-    private Integer id;
+    private  Integer id;
     @ManyToOne
     private User userId;
-    private String templateName;
+    private String messageText;
     private String recipientContact;
-    private String textMassage;
-
+    private String status;
+    private String sentMessageId;
 }

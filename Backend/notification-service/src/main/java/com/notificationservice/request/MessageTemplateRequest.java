@@ -11,8 +11,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MassageTemplateRequest {
+public class MessageTemplateRequest {
     private String templateName;
-    private String massageText;
+    private String messageText;
     private List<String> contacts;
 }
