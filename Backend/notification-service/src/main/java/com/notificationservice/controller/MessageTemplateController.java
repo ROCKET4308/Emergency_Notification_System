@@ -36,7 +36,7 @@ public class MessageTemplateController {
 
     @DeleteMapping("delete/{templateName}")
     @ResponseStatus(HttpStatus.OK)
-    public MessageTemplate deleteMessageTemplate(@PathVariable String templateName){
+    public String deleteMessageTemplate(@PathVariable String templateName){
         return messageTemplateService.deleteMessageTemplate(templateName);
     }
 

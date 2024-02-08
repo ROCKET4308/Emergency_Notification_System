@@ -3,6 +3,7 @@ package com.notificationservice.service;
 import com.notificationservice.entity.MessageStatus;
 import com.notificationservice.repository.MessageStatusRepository;
 import com.notificationservice.request.MessageRequest;
+import com.notificationservice.request.MessageTemplateRequest;
 import com.notificationservice.twilio.Sender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,16 @@ public class MessageService {
     private final Sender sender;
     private final MessageStatusRepository messageStatusRepository;
 
+    //TODO: change function save massage in massage status db
     public Map<String, String> sentMessage(MessageRequest messageRequest) {
         Map<String, String> deliveryStatusMap = new HashMap<>();
         List<String> contacts = messageRequest.getContacts();
         for(String contact : contacts){
             if(isValidEmail(contact)){
-                deliveryStatusMap.putAll(sentMailMessage(messageRequest.getMessageText(), contact));
+                sentMailMessage(messageRequest.getMessageText(), contact);
             }
             else if(isValidPhoneNumber(contact)){
-                deliveryStatusMap.putAll(sentPhoneMessage(messageRequest.getMessageText(), contact));
+                sentPhoneMessage(messageRequest.getMessageText(), contact);
             }
             else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
@@ -34,9 +36,25 @@ public class MessageService {
         return deliveryStatusMap;
     }
 
-
-    public Map<String, String> sentPhoneMessage(String messageText, String phoneNumber) {
+    //TODO: change function
+    public Map<String, String> sentMessage(MessageTemplateRequest messageTemplateRequest) {
         Map<String, String> deliveryStatusMap = new HashMap<>();
+        List<String> contacts = messageTemplateRequest.getContacts();
+        for(String contact : contacts){
+            if(isValidEmail(contact)){
+                sentMailMessage(messageTemplateRequest.getMessageText(), contact);
+            }
+            else if(isValidPhoneNumber(contact)){
+               sentPhoneMessage(messageTemplateRequest.getMessageText(), contact);
+            }
+            else{
+                throw new IllegalArgumentException("Not valid contact: " + contact);
+            }
+        }
+        return deliveryStatusMap;
+    }
+
+    public MessageStatus sentPhoneMessage(String messageText, String phoneNumber) {
         try {
                 String messageId =  sender.sentPhoneMessage(messageText, phoneNumber);
                 MessageStatus message = new MessageStatus();
@@ -45,22 +63,19 @@ public class MessageService {
                     message.setRecipientContact(phoneNumber);
                     message.setStatus("Delivered");
                     message.setSentMessageId(messageId);
-                     deliveryStatusMap.put(phoneNumber, "Delivered");
                 }else{
                     message.setMessageText(messageText);
                     message.setRecipientContact(phoneNumber);
                     message.setStatus("Not Delivered");
-                    deliveryStatusMap.put(phoneNumber, "Not Delivered");
                 }
-            messageStatusRepository.save(message);
+                return message;
         }catch (Exception e){
             throw new IllegalArgumentException(e);
         }
-        return deliveryStatusMap;
     }
 
-    public Map<String, String> sentMailMessage(String messageText, String email) {
-        Map<String, String> deliveryStatusMap = new HashMap<>();
+
+    public MessageStatus sentMailMessage(String messageText, String email) {
         try {
                 String messageId = sender.sentMailMessage(messageText, email);
                 MessageStatus message = new MessageStatus();
@@ -69,18 +84,15 @@ public class MessageService {
                     message.setRecipientContact(email);
                     message.setStatus("Delivered");
                     message.setSentMessageId(messageId);
-                    deliveryStatusMap.put(email, "Delivered");
                 }else{
                     message.setMessageText(messageText);
                     message.setRecipientContact(email);
                     message.setStatus("Not Delivered");
-                    deliveryStatusMap.put(email, "Not Delivered");
                 }
-                messageStatusRepository.save(message);
+                return message;
         }catch (Exception e){
             throw new IllegalArgumentException(e);
         }
-        return deliveryStatusMap;
     }
 
     private boolean isValidEmail(String email) {
