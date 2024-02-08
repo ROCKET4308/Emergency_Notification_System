@@ -16,7 +16,8 @@ public class MessageStatus {
     @GeneratedValue
     private  Integer id;
     @ManyToOne
-    private User userId;
+    private User user;
+    private String templateName;
     private String messageText;
     private String recipientContact;
     private String status;
