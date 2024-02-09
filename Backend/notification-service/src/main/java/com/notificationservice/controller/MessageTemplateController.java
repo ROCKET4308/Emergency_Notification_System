@@ -42,7 +42,7 @@ public class MessageTemplateController {
 
     @PostMapping("sent/{templateName}")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, String> sentMessage(@PathVariable String templateName){
+    public Map<String, String> sentMessage(@PathVariable String templateName, @RequestHeader("Authorization") String authorizationHeader){
         return messageTemplateService.sentMessage(templateName);
     }
 }

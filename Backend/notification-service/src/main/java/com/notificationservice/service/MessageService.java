@@ -1,7 +1,9 @@
 package com.notificationservice.service;
 
 import com.notificationservice.entity.MessageStatus;
+import com.notificationservice.entity.User;
 import com.notificationservice.repository.MessageStatusRepository;
+import com.notificationservice.repository.UserRepository;
 import com.notificationservice.request.MessageRequest;
 import com.notificationservice.request.MessageTemplateRequest;
 import com.notificationservice.twilio.Sender;
@@ -17,39 +19,50 @@ import java.util.Map;
 public class MessageService {
     private final Sender sender;
     private final MessageStatusRepository messageStatusRepository;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    //TODO: change function save massage in massage status db
     public Map<String, String> sentMessage(MessageRequest messageRequest) {
         Map<String, String> deliveryStatusMap = new HashMap<>();
         List<String> contacts = messageRequest.getContacts();
         for(String contact : contacts){
+            MessageStatus message;
             if(isValidEmail(contact)){
-                sentMailMessage(messageRequest.getMessageText(), contact);
+                message = sentMailMessage(messageRequest.getMessageText(), contact);
             }
             else if(isValidPhoneNumber(contact)){
-                sentPhoneMessage(messageRequest.getMessageText(), contact);
+                message = sentPhoneMessage(messageRequest.getMessageText(), contact);
             }
             else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
             }
+            messageStatusRepository.save(message);
+            deliveryStatusMap.put(message.getRecipientContact(), message.getStatus());
         }
         return deliveryStatusMap;
     }
 
-    //TODO: change function
-    public Map<String, String> sentMessage(MessageTemplateRequest messageTemplateRequest) {
+    public Map<String, String> sentMessage(MessageTemplateRequest messageTemplateRequest, String authorizationHeader) {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        String email = jwtService.extractUsername(jwtToken);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
         Map<String, String> deliveryStatusMap = new HashMap<>();
         List<String> contacts = messageTemplateRequest.getContacts();
         for(String contact : contacts){
+            MessageStatus message;
             if(isValidEmail(contact)){
-                sentMailMessage(messageTemplateRequest.getMessageText(), contact);
+                message = sentMailMessage(messageTemplateRequest.getMessageText(), contact);
             }
             else if(isValidPhoneNumber(contact)){
-               sentPhoneMessage(messageTemplateRequest.getMessageText(), contact);
+                message = sentPhoneMessage(messageTemplateRequest.getMessageText(), contact);
             }
             else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
             }
+            message.setUser(user);
+            message.setTemplateName(messageTemplateRequest.getTemplateName());
+            messageStatusRepository.save(message);
+            deliveryStatusMap.put(message.getRecipientContact(), message.getStatus());
         }
         return deliveryStatusMap;
     }
