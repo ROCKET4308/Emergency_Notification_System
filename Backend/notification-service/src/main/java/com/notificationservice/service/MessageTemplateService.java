@@ -4,7 +4,6 @@ import com.notificationservice.entity.MessageTemplate;
 import com.notificationservice.entity.User;
 import com.notificationservice.repository.MessageTemplateRepository;
 import com.notificationservice.repository.UserRepository;
-import com.notificationservice.request.MessageRequest;
 import com.notificationservice.request.MessageTemplateRequest;
 import com.notificationservice.response.MessageTemplateResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +22,11 @@ public class MessageTemplateService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
+    //TODO: make function to check is user exist and return him
+
+
     public MessageTemplateResponse createMessageTemplate(MessageTemplateRequest messageTemplateRequest, String authorizationHeader) {
-        String jwtToken = authorizationHeader.replace("Bearer ", "");
-        String email = jwtService.extractUsername(jwtToken);
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
+        User user = getUserByToken(authorizationHeader);
         if(messageTemplateRepository.findByUserAndTemplateName(user, messageTemplateRequest.getTemplateName()).isPresent()){
             throw new IllegalArgumentException("Template with that name " + messageTemplateRequest.getTemplateName() + " is presented, change name");
         }
@@ -35,15 +35,13 @@ public class MessageTemplateService {
                     .recipientContact(recipientContact).messageText(messageTemplateRequest.getMessageText()).build();
             messageTemplateRepository.save(messageTemplate);
         }
-        MessageTemplateResponse messageTemplateResponse = MessageTemplateResponse.builder().templateName(messageTemplateRequest.getTemplateName()).messageText(messageTemplateRequest.getMessageText())
+
+        return MessageTemplateResponse.builder().templateName(messageTemplateRequest.getTemplateName()).messageText(messageTemplateRequest.getMessageText())
                 .recipientContacts(messageTemplateRequest.getRecipientContacts()).build();
-        return messageTemplateResponse;
     }
 
     public MessageTemplateResponse getMessageTemplate(String templateName, String authorizationHeader) {
-        String jwtToken = authorizationHeader.replace("Bearer ", "");
-        String email = jwtService.extractUsername(jwtToken);
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
+        User user = getUserByToken(authorizationHeader);
         List<MessageTemplate> messageTemplateList = messageTemplateRepository.findAllByUserAndTemplateName(user, templateName);
         if(messageTemplateList.isEmpty()){
             throw new IllegalArgumentException("There is no message template with that name" + templateName);
@@ -54,9 +52,8 @@ public class MessageTemplateService {
             recipientContacts.add(messageTemplate.getRecipientContact());
         }
 
-        MessageTemplateResponse messageTemplateResponse = MessageTemplateResponse.builder().templateName(messageTemplateList.get(0).getTemplateName())
+        return MessageTemplateResponse.builder().templateName(messageTemplateList.get(0).getTemplateName())
                 .messageText(messageTemplateList.get(0).getMessageText()).recipientContacts(recipientContacts).build();
-        return messageTemplateResponse;
     }
 
     //TODO:
@@ -73,6 +70,12 @@ public class MessageTemplateService {
     public Map<String, String> sentMessage(String templateName) {
 
         return new HashMap<>();
+    }
+
+    public User getUserByToken(String authorizationHeader){
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        String email = jwtService.extractUsername(jwtToken);
+        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
     }
 
 }
