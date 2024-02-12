@@ -1,4 +1,4 @@
-package com.notificationservice.request;
+package com.notificationservice.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageTemplateRequest {
+public class MessageTemplateResponse {
     private String templateName;
     private String messageText;
     private List<String> recipientContacts;

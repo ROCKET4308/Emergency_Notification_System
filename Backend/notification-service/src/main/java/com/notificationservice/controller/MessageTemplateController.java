@@ -2,6 +2,7 @@ package com.notificationservice.controller;
 
 import com.notificationservice.entity.MessageTemplate;
 import com.notificationservice.request.MessageTemplateRequest;
+import com.notificationservice.response.MessageTemplateResponse;
 import com.notificationservice.service.MessageTemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,20 +19,20 @@ public class MessageTemplateController {
 
     @PostMapping("create")
     @ResponseStatus(HttpStatus.OK)
-    public String createMessageTemplate(@RequestBody MessageTemplateRequest messageTemplateRequest){
-        return messageTemplateService.createMessageTemplate(messageTemplateRequest);
+    public MessageTemplateResponse createMessageTemplate(@RequestBody MessageTemplateRequest messageTemplateRequest, @RequestHeader("Authorization") String authorizationHeader){
+        return messageTemplateService.createMessageTemplate(messageTemplateRequest, authorizationHeader);
     }
 
     @GetMapping("get/{templateName}")
     @ResponseStatus(HttpStatus.OK)
-    public MessageTemplate getMessageTemplate(@PathVariable String templateName){
-        return messageTemplateService.getMessageTemplate(templateName);
+    public MessageTemplateResponse getMessageTemplate(@PathVariable String templateName, @RequestHeader("Authorization") String authorizationHeader){
+        return messageTemplateService.getMessageTemplate(templateName, authorizationHeader);
     }
 
     @PutMapping("update/{templateName}")
     @ResponseStatus(HttpStatus.OK)
-    public MessageTemplate updeteMessageTemplate(@PathVariable String templateName){
-        return messageTemplateService.updeteMessageTemplate(templateName);
+    public MessageTemplateResponse updateMessageTemplate(@PathVariable String templateName){
+        return messageTemplateService.updateMessageTemplate(templateName);
     }
 
     @DeleteMapping("delete/{templateName}")

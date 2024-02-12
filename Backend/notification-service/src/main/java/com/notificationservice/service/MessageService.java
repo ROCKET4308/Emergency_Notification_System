@@ -24,7 +24,7 @@ public class MessageService {
 
     public Map<String, String> sentMessage(MessageRequest messageRequest) {
         Map<String, String> deliveryStatusMap = new HashMap<>();
-        List<String> contacts = messageRequest.getContacts();
+        List<String> contacts = messageRequest.getRecipientContacts();
         for(String contact : contacts){
             MessageStatus message;
             if(isValidEmail(contact)){
@@ -47,7 +47,7 @@ public class MessageService {
         String email = jwtService.extractUsername(jwtToken);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
         Map<String, String> deliveryStatusMap = new HashMap<>();
-        List<String> contacts = messageTemplateRequest.getContacts();
+        List<String> contacts = messageTemplateRequest.getRecipientContacts();
         for(String contact : contacts){
             MessageStatus message;
             if(isValidEmail(contact)){

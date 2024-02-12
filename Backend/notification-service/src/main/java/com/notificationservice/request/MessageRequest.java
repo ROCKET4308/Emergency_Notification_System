@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class MessageRequest {
     private String messageText;
-    private List<String> contacts;
+    private List<String> recipientContacts;
 }
