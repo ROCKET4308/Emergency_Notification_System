@@ -1,6 +1,5 @@
 package com.notificationservice.controller;
 
-import com.notificationservice.entity.MessageTemplate;
 import com.notificationservice.request.MessageTemplateRequest;
 import com.notificationservice.response.MessageTemplateResponse;
 import com.notificationservice.service.MessageTemplateService;
@@ -31,19 +30,19 @@ public class MessageTemplateController {
 
     @PutMapping("update/{templateName}")
     @ResponseStatus(HttpStatus.OK)
-    public MessageTemplateResponse updateMessageTemplate(@PathVariable String templateName){
-        return messageTemplateService.updateMessageTemplate(templateName);
+    public MessageTemplateResponse updateMessageTemplate(@PathVariable String templateName, @RequestBody MessageTemplateRequest messageTemplateRequest, @RequestHeader("Authorization") String authorizationHeader){
+        return messageTemplateService.updateMessageTemplate(templateName,messageTemplateRequest, authorizationHeader);
     }
 
     @DeleteMapping("delete/{templateName}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteMessageTemplate(@PathVariable String templateName){
-        return messageTemplateService.deleteMessageTemplate(templateName);
+    public String deleteMessageTemplate(@PathVariable String templateName, @RequestHeader("Authorization") String authorizationHeader){
+        return messageTemplateService.deleteMessageTemplate(templateName, authorizationHeader);
     }
 
     @PostMapping("sent/{templateName}")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> sentMessage(@PathVariable String templateName, @RequestHeader("Authorization") String authorizationHeader){
-        return messageTemplateService.sentMessage(templateName);
+        return messageTemplateService.sentMessage(templateName, authorizationHeader);
     }
 }
