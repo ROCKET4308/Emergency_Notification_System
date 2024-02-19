@@ -65,7 +65,7 @@ public class MessageService {
         try {
                 String messageId =  sender.sentPhoneMessage(messageText, phoneNumber);
                 MessageStatus message = new MessageStatus();
-                if(messageId.length() == 34){
+                if(messageId != null && messageId.length() == 34){
                     message.setMessageText(messageText);
                     message.setRecipientContact(phoneNumber);
                     message.setStatus("Delivered");
@@ -86,7 +86,7 @@ public class MessageService {
         try {
                 String messageId = sender.sentMailMessage(messageText, email);
                 MessageStatus message = new MessageStatus();
-                if(messageId.length() == 22){
+                if(messageId != null && messageId.length() == 22){
                     message.setMessageText(messageText);
                     message.setRecipientContact(email);
                     message.setStatus("Delivered");
@@ -102,12 +102,12 @@ public class MessageService {
         }
     }
 
-    private boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(emailRegex);
     }
 
-    private boolean isValidPhoneNumber(String phoneNumber) {
+    public boolean isValidPhoneNumber(String phoneNumber) {
         String phoneRegex = "^\\+[0-9]{1,3}[0-9]{9,14}$";
         return phoneNumber.matches(phoneRegex);
     }

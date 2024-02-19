@@ -63,12 +63,8 @@ class MessageTemplateRepositoryTest {
         String templateName = "TemplateName";
         MessageTemplate messageTemplate1 = new MessageTemplate(1, user, templateName, "messageText", "recipientContact");
         MessageTemplate messageTemplate2 = new MessageTemplate(2, user, templateName, "messageText", "recipientContact2");
-        messageTemplate1 = messageTemplateRepository.save(messageTemplate1);
-        messageTemplate2 = messageTemplateRepository.save(messageTemplate2);
-
-        List<MessageTemplate> messageTemplateList = new ArrayList<>();
-        messageTemplateList.add(messageTemplate1);
-        messageTemplateList.add(messageTemplate2);
+        messageTemplateRepository.save(messageTemplate1);
+        messageTemplateRepository.save(messageTemplate2);
 
         messageTemplateRepository.deleteAllByUserAndTemplateName(user, templateName);
 
