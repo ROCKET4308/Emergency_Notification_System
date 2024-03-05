@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import './SentPage.css';
+import SentMessagePageCSS from './SentMessagePage.module.css';
 import * as XLSX from 'xlsx';
 
 function SentPage() {
@@ -58,12 +58,12 @@ function SentPage() {
   });
 
   return (
-    <div className="SentPage">
-      <div {...getRootProps()} className="DragNDrop">
+    <div className={SentMessagePageCSS.SentMassagePage}>
+      <div {...getRootProps()} className={SentMessagePageCSS.DragNDrop}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop CSV or XLS file here, or click to select files</p>
       </div>
-      <div className="TextArea">
+      <div className={SentMessagePageCSS.TextArea}>
         <textarea
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}

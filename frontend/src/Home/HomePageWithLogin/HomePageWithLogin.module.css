@@ -1,0 +1,45 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+}
+  
+.buttonContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: row;
+}
+  
+.inputButton {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+  
+.inputButton:hover {
+    background-color: #d32f2f;
+}
+  
+.inputButton:active {
+  background-color: #b71c1c;
+}
+  
+  
+.templateContainer {
+    width: 600px;
+    height: 600px;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}

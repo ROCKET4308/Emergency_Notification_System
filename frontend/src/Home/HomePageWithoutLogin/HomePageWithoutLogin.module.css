@@ -1,0 +1,81 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+.buttonContainer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.inputButton {
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.inputButton:hover {
+  background-color: #d32f2f;
+}
+
+.inputButton:active {
+  background-color: #b71c1c;
+}
+
+
+.templateContainer {
+  width: 600px;
+  height: 600px;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.templateContainer::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.template {
+  width: 500px;
+  height: 100px;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding-left: 20px;
+  margin: 10px auto;
+}
+
+.templateButton{
+  padding: 5px 10px;
+  margin: auto;
+  background-color: #706e6e;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+}
