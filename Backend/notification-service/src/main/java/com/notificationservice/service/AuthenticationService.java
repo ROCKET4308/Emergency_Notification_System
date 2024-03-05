@@ -20,6 +20,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -52,5 +53,12 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public Boolean verify(String authorizationHeader) {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        String email = jwtService.extractUsername(jwtToken);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
+        return jwtService.isTokenValid(jwtToken, user);
     }
 }

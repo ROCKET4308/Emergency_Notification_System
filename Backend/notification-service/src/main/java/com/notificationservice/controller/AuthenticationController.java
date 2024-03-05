@@ -6,14 +6,12 @@ import com.notificationservice.service.AuthenticationService;
 import com.notificationservice.request.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
 
     private final AuthenticationService service;
@@ -31,5 +29,12 @@ public class AuthenticationController {
     ){
         return ResponseEntity.ok(service.authenticate(request));
 
+    }
+
+    @GetMapping("/verify")
+    public Boolean verify(
+            @RequestHeader("Authorization") String token
+    ){
+        return service.verify(token);
     }
 }
