@@ -3,7 +3,8 @@ import LoginPageCSS from './LoginPage.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
  
-function Login() {
+const Login = (props) => {
+  const { setIsLoggedIn } = props
  
   const [input, setInput] = useState({
     email: '',
@@ -26,23 +27,32 @@ function Login() {
     validateInput(e);
   }
 
-  const onButtonClick = () => {
-  
+  const onButtonClick = async () => {
     const requestBody = {
       email: input.email,
       password: input.password,
     };
   
-    // Make the API request to http://localhost:8080/auth/login
-    axios.post('http://localhost:8080/auth/login', requestBody)
-      .then(response => {
-        console.log('API Response:', response.data);
-        navigate('/withLogin');
-      })
-      .catch(error => {
-        console.error('API Error:', error);
-      });
+    try {
+      // Make the API request to http://localhost:8080/auth/login
+      const response = await axios.post('http://localhost:8080/auth/login', requestBody);
+      console.log('API Response:', response.data);
+      const token = response.data.token;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      localStorage.setItem("token", token);
+
+      const verifyResponse = await axios.get('http://localhost:8080/auth/verify');
+      if (verifyResponse.data) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      navigate('/home');
+    } catch (error) {
+      console.error('API Error:', error);
+    }
   };
+  
   
   
  
@@ -80,7 +90,7 @@ function Login() {
  
   return (
     <div className={LoginPageCSS.app}>
-      <h4>Registration</h4>
+      <h4>Login</h4>
       <div className={LoginPageCSS.form}>
  
         <input
