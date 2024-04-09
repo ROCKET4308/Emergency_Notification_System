@@ -1,13 +1,13 @@
-package com.workerservice;
+package com.apiservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WorkerServiceApplication {
+public class ApiServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WorkerServiceApplication.class, args);
+		SpringApplication.run(ApiServiceApplication.class, args);
 	}
 
 }

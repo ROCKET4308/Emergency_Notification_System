@@ -11,7 +11,14 @@
         <option value="$PROJECT_DIR$/Backend/sms-service/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/worker-service/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/rebalance-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/message-template-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/api-service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/Backend/worker-service/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="20" project-jdk-type="JavaSDK">

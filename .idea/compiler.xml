@@ -8,20 +8,26 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eureka-service" />
-        <module name="worker-service" />
+        <module name="api-service" />
         <module name="auth-service" />
         <module name="rebalance-service" />
         <module name="sms-service" />
+        <module name="message-template-service" />
         <module name="mail-service" />
         <module name="notification-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="worker-service" target="20" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-service" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="eureka-service" options="-parameters" />
       <module name="mail-service" options="-parameters" />
+      <module name="message-template-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="rebalance-service" options="-parameters" />
       <module name="sms-service" options="-parameters" />
