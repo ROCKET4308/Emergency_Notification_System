@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ens-db
+    url: jdbc:postgresql://localhost:5432/ens-auth-db
     username: postgres
     password: 12345
   jpa:
