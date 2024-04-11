@@ -6,8 +6,8 @@
     <file url="file://$PROJECT_DIR$/Backend/auth-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/eureka-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/mail-service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Backend/message-template-service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Backend/message-template-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Backend/message-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Backend/message-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/notification-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/rebalance-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/rebalance-service/src/main/resources" charset="UTF-8" />
