@@ -1,6 +1,5 @@
 package com.notificationservice.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,14 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class MessageTemplate {
-    @Id
-    @GeneratedValue
-    private Integer id;
-    @ManyToOne
-    private User user;
-    private String templateName;
+public class NotificationStatus {
+    private String name;
     private String messageText;
     private String recipientContact;
+    private String status;
+    private String sentMessageId;
 }

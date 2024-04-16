@@ -1,18 +1,15 @@
-package com.notificationservice.request;
+package com.smsservice.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageTemplateRequest {
-    private String templateName;
+public class SmsRequest {
     private String messageText;
-    private List<String> recipientContacts;
+    private String recipientNumber;
 }

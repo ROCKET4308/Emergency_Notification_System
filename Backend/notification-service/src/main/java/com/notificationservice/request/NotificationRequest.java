@@ -1,4 +1,4 @@
-package com.smsservice.request;
+package com.notificationservice.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageRequest {
+public class NotificationRequest {
+    private String name;
     private String messageText;
     private List<String> recipientContacts;
 }

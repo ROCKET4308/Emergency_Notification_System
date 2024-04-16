@@ -1,7 +1,7 @@
 package com.mailservice.service;
 
 
-import com.mailservice.request.MessageRequest;
+import com.mailservice.request.MailRequest;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -14,9 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,20 +21,8 @@ public class MailService {
     @Value("${send_grid.api_key}")
     private String SEND_GRID_API_KEY;
 
-    public Map<String, String> sentMessage(MessageRequest messageRequest) throws IOException {
-        Map<String, String> deliveryStatusMap = new HashMap<>();
-        List<String> contacts = messageRequest.getRecipientContacts();
-        for(String contact : contacts){
-            String status;
-            if(isValidEmail(contact)){
-                status = sentMailMessage(messageRequest.getMessageText(), contact);
-            }
-            else{
-                throw new IllegalArgumentException("Not valid contact: " + contact);
-            }
-            deliveryStatusMap.put(contact, status);
-        }
-        return deliveryStatusMap;
+    public String sentMessage(MailRequest mailRequest) throws IOException {
+        return sentMailMessage(mailRequest.getMessageText(), mailRequest.getRecipientMail());
     }
 
     public String sentMailMessage(String messageText, String recipientMail) throws IOException {
@@ -60,18 +45,6 @@ public class MailService {
         Response response = sg.api(request);
         String messageId = response.getHeaders().get("X-Message-Id");
         System.out.println("Message ID: " + messageId);
-
-        String status;
-        if(messageId != null && messageId.length() == 22){
-            status = "Delivered";
-        }else{
-            status = "Not Delivered";
-        }
-        return status;
-    }
-
-    public boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return email.matches(emailRegex);
+        return messageId;
     }
 }

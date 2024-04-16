@@ -1,4 +1,4 @@
-package com.notificationservice.repository;
+package com.rebalanceservice.repository;
 
 import com.notificationservice.entity.MessageStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
