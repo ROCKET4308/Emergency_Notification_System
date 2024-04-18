@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/Backend/rebalance-service/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/message-template-service/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/api-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/message-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

@@ -5,16 +5,15 @@ import com.notificationservice.request.NotificationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
 
-    public Map<String, String> sentMessage(NotificationRequest notificationRequestRequest) {
-        Map<String, String> deliveryStatusMap = new HashMap<>();
+    public List<NotificationStatus> sentMessage(NotificationRequest notificationRequestRequest) {
+        List<NotificationStatus> notificationStatusList = new ArrayList<>();
         List<String> contacts = notificationRequestRequest.getRecipientContacts();
         for(String contact : contacts){
             NotificationStatus notificationStatus;
@@ -27,9 +26,9 @@ public class NotificationService {
             else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
             }
-            deliveryStatusMap.put(notificationStatus.getRecipientContact(), notificationStatus.getStatus());
+            notificationStatusList.add(notificationStatus);
         }
-        return deliveryStatusMap;
+        return notificationStatusList;
     }
 
     //TODO: make api request to sms service
