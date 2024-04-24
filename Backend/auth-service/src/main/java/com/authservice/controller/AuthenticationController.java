@@ -42,8 +42,9 @@ public class AuthenticationController {
 
     @GetMapping("/extractEmail")
     public String extractEmail(
-            @RequestHeader("Authorization") String token
+            @RequestHeader("Authorization") String authorizationHeader
     ){
+        String token = authorizationHeader.replace("Bearer ", "");
         return jwtService.extractUsername(token);
     }
 }

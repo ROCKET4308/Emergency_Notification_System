@@ -14,6 +14,7 @@
         <option value="$PROJECT_DIR$/Backend/message-template-service/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/api-service/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/message-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/discovery-server/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

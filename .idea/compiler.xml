@@ -7,9 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="eureka-service" />
         <module name="auth-service" />
         <module name="rebalance-service" />
+        <module name="discovery-server" />
         <module name="sms-service" />
         <module name="mail-service" />
         <module name="message-service" />
@@ -25,7 +25,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-service" options="-parameters" />
       <module name="auth-service" options="-parameters" />
-      <module name="eureka-service" options="-parameters" />
+      <module name="discovery-server" options="-parameters" />
       <module name="mail-service" options="-parameters" />
       <module name="message-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />

@@ -6,6 +6,7 @@ import com.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 public class NotificationController {
     private final NotificationService messageService;
+    private final WebClient.Builder webClientBuilder;
 
     @PostMapping("sent")
     @ResponseStatus(HttpStatus.OK)

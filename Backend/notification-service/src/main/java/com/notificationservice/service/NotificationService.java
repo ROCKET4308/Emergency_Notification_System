@@ -4,6 +4,7 @@ import com.notificationservice.entity.NotificationStatus;
 import com.notificationservice.request.NotificationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
+    private final WebClient.Builder webClientBuilder;
 
     public List<NotificationStatus> sentMessage(NotificationRequest notificationRequestRequest) {
         List<NotificationStatus> notificationStatusList = new ArrayList<>();

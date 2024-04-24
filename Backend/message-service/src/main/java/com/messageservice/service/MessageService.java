@@ -5,15 +5,19 @@ import com.messageservice.repository.MessageRepository;
 import com.messageservice.request.MessageRequest;
 import com.messageservice.response.MessageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MessageService {
     private final MessageRepository messageRepository;
-
+    private final WebClient.Builder webClientBuilder;
 
 
     public MessageResponse createMessage(MessageRequest messageRequest, String authorizationHeader) {
@@ -87,12 +91,36 @@ public class MessageService {
 
     //TODO: sent by api request to notification-service
     public Map<String, String> sentMessage(String name, String authorizationHeader) {
-        return new HashMap<>();
+        String email = getEmailByToken(authorizationHeader);
+        List<Message> messageList = messageRepository.findAllByEmailAndName(email, name);
+        if(messageList.isEmpty()){
+            throw new IllegalArgumentException("Error to find message with name "+ name);
+        }
+        Message firstMessage = messageList.get(0);
+        MessageRequest messageRequest = MessageRequest.builder()
+                .name(firstMessage.getName())
+                .messageText(firstMessage.getMessageText())
+                .recipientContacts(messageList.stream()
+                        .map(Message::getRecipientContact)
+                        .collect(Collectors.toList()))
+                .build();
+
+        return webClientBuilder.build()
+                .post()
+                .uri("http://notification-service/notification/sent")
+                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                .body(Mono.just(messageRequest), MessageRequest.class)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
     }
 
-    //TODO: return email, get email by api request to auth-service
     public String getEmailByToken(String authorizationHeader){
-        String jwtToken = authorizationHeader.replace("Bearer ", "");
-        return "";
+        return webClientBuilder.build().get()
+                .uri("http://auth-service/auth/extractEmail")
+                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 }
