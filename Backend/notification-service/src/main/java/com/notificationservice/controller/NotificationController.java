@@ -4,9 +4,11 @@ import com.notificationservice.entity.NotificationStatus;
 import com.notificationservice.request.NotificationRequest;
 import com.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +26,13 @@ public class NotificationController {
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> sentMessage(@RequestBody NotificationRequest notificationRequest){
         List<NotificationStatus> notificationStatusList = messageService.sentMessage(notificationRequest);
-        //TODO: make api request to rebalance service
-        return new HashMap<>();
+        return webClientBuilder.build()
+                .post()
+                .uri("http://rebalance-service/rebalance")
+                .body(Mono.just(notificationStatusList), NotificationStatus.class)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
     }
 
     @PostMapping("retrySent")

@@ -1,29 +1,33 @@
 package com.notificationservice.service;
 
 import com.notificationservice.entity.NotificationStatus;
+import com.notificationservice.request.MessageRequest;
 import com.notificationservice.request.NotificationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
     private final WebClient.Builder webClientBuilder;
 
-    public List<NotificationStatus> sentMessage(NotificationRequest notificationRequestRequest) {
+    public List<NotificationStatus> sentMessage(NotificationRequest notificationRequest) {
         List<NotificationStatus> notificationStatusList = new ArrayList<>();
-        List<String> contacts = notificationRequestRequest.getRecipientContacts();
+        List<String> contacts = notificationRequest.getRecipientContacts();
         for(String contact : contacts){
             NotificationStatus notificationStatus;
+            MessageRequest messageRequest = new MessageRequest(notificationRequest.getMessageText(), contact);
             if(isEmail(contact)){
-                notificationStatus = sentMailMessage(notificationRequestRequest.getMessageText(), contact);
+                notificationStatus = sentMailMessage(messageRequest);
             }
             else if(isPhoneNumber(contact)){
-                notificationStatus = sentPhoneMessage(notificationRequestRequest.getMessageText(), contact);
+                notificationStatus = sentSmsMessage(messageRequest);
             }
             else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
@@ -33,19 +37,25 @@ public class NotificationService {
         return notificationStatusList;
     }
 
-    //TODO: make api request to sms service
-    public NotificationStatus sentPhoneMessage(String messageText, String phoneNumber) {
+    public NotificationStatus sentSmsMessage(MessageRequest messageRequest) {
         try {
-                String messageId =  "";
+                String messageId = webClientBuilder.build()
+                        .post()
+                        .uri("http://sms-service/sms/sent")
+                        .body(Mono.just(messageRequest), MessageRequest.class)
+                        .retrieve()
+                        .bodyToMono(String.class)
+                        .block();
+
                 NotificationStatus notificationStatus = new NotificationStatus();
                 if(messageId != null && messageId.length() == 34){
-                    notificationStatus.setMessageText(messageText);
-                    notificationStatus.setRecipientContact(phoneNumber);
+                    notificationStatus.setMessageText(messageRequest.getMessageText());
+                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Delivered");
                     notificationStatus.setSentMessageId(messageId);
                 }else{
-                    notificationStatus.setMessageText(messageText);
-                    notificationStatus.setRecipientContact(phoneNumber);
+                    notificationStatus.setMessageText(messageRequest.getMessageText());
+                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Not Delivered");
                 }
                 return notificationStatus;
@@ -54,19 +64,25 @@ public class NotificationService {
         }
     }
 
-    //TODO: make api request to mail service
-    public NotificationStatus sentMailMessage(String messageText, String email) {
+    public NotificationStatus sentMailMessage(MessageRequest messageRequest) {
         try {
-                String messageId =  "";
+                String messageId =  webClientBuilder.build()
+                        .post()
+                        .uri("http://mail-service/mail/sent")
+                        .body(Mono.just(messageRequest), MessageRequest.class)
+                        .retrieve()
+                        .bodyToMono(String.class)
+                        .block();;
+
                 NotificationStatus notificationStatus = new NotificationStatus();
                 if(messageId != null && messageId.length() == 22){
-                    notificationStatus.setMessageText(messageText);
-                    notificationStatus.setRecipientContact(email);
+                    notificationStatus.setMessageText(messageRequest.getMessageText());
+                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Delivered");
                     notificationStatus.setSentMessageId(messageId);
                 }else{
-                    notificationStatus.setMessageText(messageText);
-                    notificationStatus.setRecipientContact(email);
+                    notificationStatus.setMessageText(messageRequest.getMessageText());
+                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Not Delivered");
                 }
                 return notificationStatus;
