@@ -4,8 +4,10 @@ import com.rebalanceservice.entity.NotificationStatus;
 import com.rebalanceservice.repository.NotificationStatusRepository;
 import com.rebalanceservice.request.NotificationRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class RebalanceService {
-    //TODO: make repo to store message status
     private final WebClient.Builder webClientBuilder;
     private final NotificationStatusRepository notificationStatusRepository;
 
@@ -29,6 +30,7 @@ public class RebalanceService {
                 notificationStatusList.remove(notification);
             }else{
                 notificationStatusRepository.save(notification);
+                notificationStatusMap.put(notification.getRecipientContact(), notification.getStatus());
             }
         }
 
@@ -38,11 +40,17 @@ public class RebalanceService {
                             notificationStatusList.get(0).getMessageText(),
                             notDeliveredNotificationContactList
                     );
-            //TODO: make api call to worker service retrySent controller and save message from return list to repository
-        }
-
-        for (NotificationStatus notification : notificationStatusList){
-            notificationStatusMap.put(notification.getRecipientContact(), notification.getStatus());
+            List<NotificationStatus> notificationRetryStatusList= webClientBuilder.build()
+                    .post()
+                    .uri("http://notification-service/notification/retrySent")
+                    .body(Mono.just(notificationRequest), NotificationRequest.class)
+                    .retrieve()
+                    .bodyToMono(List.class)
+                    .block();
+            for(NotificationStatus notification : notificationRetryStatusList){
+                notificationStatusRepository.save(notification);
+                notificationStatusMap.put(notification.getRecipientContact(), notification.getStatus());
+            }
         }
         return notificationStatusMap;
     }

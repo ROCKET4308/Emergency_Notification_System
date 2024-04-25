@@ -21,5 +21,5 @@ public class NotificationStatus {
     private String messageText;
     private String recipientContact;
     private String status;
-    private String sendMessageId;
+    private String sentMessageId;
 }
