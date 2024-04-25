@@ -89,7 +89,6 @@ public class MessageService {
         return messageMap;
     }
 
-    //TODO: sent by api request to notification-service
     public Map<String, String> sentMessage(String name, String authorizationHeader) {
         String email = getEmailByToken(authorizationHeader);
         List<Message> messageList = messageRepository.findAllByEmailAndName(email, name);

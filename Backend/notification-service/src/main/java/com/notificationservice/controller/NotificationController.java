@@ -4,13 +4,11 @@ import com.notificationservice.entity.NotificationStatus;
 import com.notificationservice.request.NotificationRequest;
 import com.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
