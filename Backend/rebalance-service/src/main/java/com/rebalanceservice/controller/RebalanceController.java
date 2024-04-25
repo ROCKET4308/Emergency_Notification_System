@@ -16,7 +16,7 @@ import java.util.Map;
 public class RebalanceController{
     private final RebalanceService rebalanceService;
 
-    @PostMapping("")
+    @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> sentMessage(@RequestBody List<NotificationStatus> notificationStatusList){
         return rebalanceService.rebalance(notificationStatusList);

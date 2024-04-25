@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationStatus {
+    private Integer id;
     private String name;
     private String messageText;
     private String recipientContact;

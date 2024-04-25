@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,14 +24,24 @@ public class NotificationController {
     @PostMapping("sent")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> sentMessage(@RequestBody NotificationRequest notificationRequest){
+
+//        Map<String, String> notificationStatusMap = new HashMap<>();
+
         List<NotificationStatus> notificationStatusList = messageService.sentMessage(notificationRequest);
+
+//        for (NotificationStatus notification : notificationStatusList) {
+//            notificationStatusMap.put(notification.getRecipientContact(), notification.getStatus());
+//        }
+
         return webClientBuilder.build()
-                .post()
-                .uri("http://rebalance-service/rebalance")
-                .body(Mono.just(notificationStatusList), NotificationStatus.class)
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
+                        .post()
+                        .uri("http://rebalance-service/rebalance")
+                        .body(Mono.just(notificationStatusList), NotificationStatus.class)
+                        .retrieve()
+                        .bodyToMono(Map.class)
+                        .block();
+
+//        return notificationStatusMap;
     }
 
     @PostMapping("retrySent")

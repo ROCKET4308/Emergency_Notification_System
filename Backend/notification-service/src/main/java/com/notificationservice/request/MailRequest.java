@@ -1,4 +1,4 @@
-package com.mailservice.request;
+package com.notificationservice.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

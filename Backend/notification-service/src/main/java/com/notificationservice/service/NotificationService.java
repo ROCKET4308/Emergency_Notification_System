@@ -1,8 +1,9 @@
 package com.notificationservice.service;
 
 import com.notificationservice.entity.NotificationStatus;
-import com.notificationservice.request.MessageRequest;
+import com.notificationservice.request.MailRequest;
 import com.notificationservice.request.NotificationRequest;
+import com.notificationservice.request.SmsRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,40 +22,40 @@ public class NotificationService {
         List<String> contacts = notificationRequest.getRecipientContacts();
         for(String contact : contacts){
             NotificationStatus notificationStatus;
-            MessageRequest messageRequest = new MessageRequest(notificationRequest.getMessageText(), contact);
             if(isEmail(contact)){
-                notificationStatus = sentMailMessage(messageRequest);
+                MailRequest mailRequest = new MailRequest(notificationRequest.getMessageText(), contact);
+                notificationStatus = sentMailMessage(mailRequest);
             }
             else if(isPhoneNumber(contact)){
-                notificationStatus = sentSmsMessage(messageRequest);
+                SmsRequest smsRequest = new SmsRequest(notificationRequest.getMessageText(), contact);
+                notificationStatus = sentSmsMessage(smsRequest);
             }
             else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
             }
+            notificationStatus.setName(notificationRequest.getName());
+            notificationStatus.setMessageText(notificationRequest.getMessageText());
+            notificationStatus.setRecipientContact(contact);
             notificationStatusList.add(notificationStatus);
         }
         return notificationStatusList;
     }
 
-    public NotificationStatus sentSmsMessage(MessageRequest messageRequest) {
+    public NotificationStatus sentSmsMessage(SmsRequest smsRequest) {
         try {
                 String messageId = webClientBuilder.build()
                         .post()
                         .uri("http://sms-service/sms/sent")
-                        .body(Mono.just(messageRequest), MessageRequest.class)
+                        .body(Mono.just(smsRequest), SmsRequest.class)
                         .retrieve()
                         .bodyToMono(String.class)
                         .block();
 
                 NotificationStatus notificationStatus = new NotificationStatus();
                 if(messageId != null && messageId.length() == 34){
-                    notificationStatus.setMessageText(messageRequest.getMessageText());
-                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Delivered");
                     notificationStatus.setSentMessageId(messageId);
                 }else{
-                    notificationStatus.setMessageText(messageRequest.getMessageText());
-                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Not Delivered");
                 }
                 return notificationStatus;
@@ -63,25 +64,21 @@ public class NotificationService {
         }
     }
 
-    public NotificationStatus sentMailMessage(MessageRequest messageRequest) {
+    public NotificationStatus sentMailMessage(MailRequest mailRequest) {
         try {
                 String messageId =  webClientBuilder.build()
                         .post()
                         .uri("http://mail-service/mail/sent")
-                        .body(Mono.just(messageRequest), MessageRequest.class)
+                        .body(Mono.just(mailRequest), MailRequest.class)
                         .retrieve()
                         .bodyToMono(String.class)
                         .block();;
 
                 NotificationStatus notificationStatus = new NotificationStatus();
                 if(messageId != null && messageId.length() == 22){
-                    notificationStatus.setMessageText(messageRequest.getMessageText());
-                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Delivered");
                     notificationStatus.setSentMessageId(messageId);
                 }else{
-                    notificationStatus.setMessageText(messageRequest.getMessageText());
-                    notificationStatus.setRecipientContact(messageRequest.getRecipientContact());
                     notificationStatus.setStatus("Not Delivered");
                 }
                 return notificationStatus;
