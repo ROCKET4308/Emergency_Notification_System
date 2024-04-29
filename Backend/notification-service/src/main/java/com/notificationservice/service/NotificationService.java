@@ -1,6 +1,7 @@
 package com.notificationservice.service;
 
 import com.notificationservice.entity.NotificationStatus;
+import com.notificationservice.request.FakeMessageRequest;
 import com.notificationservice.request.MailRequest;
 import com.notificationservice.request.NotificationRequest;
 import com.notificationservice.request.SmsRequest;
@@ -22,15 +23,17 @@ public class NotificationService {
         List<String> contacts = notificationRequest.getRecipientContacts();
         for(String contact : contacts){
             NotificationStatus notificationStatus;
-            if(isEmail(contact)){
-                MailRequest mailRequest = new MailRequest(notificationRequest.getMessageText(), contact);
-                notificationStatus = sentMailMessage(mailRequest);
+            if (isFakeMessage(contact)) {
+                FakeMessageRequest fakeMessageRequest = new FakeMessageRequest(notificationRequest.getMessageText(), contact);
+                notificationStatus = sentFakeMessage(fakeMessageRequest);
             }
             else if(isPhoneNumber(contact)){
                 SmsRequest smsRequest = new SmsRequest(notificationRequest.getMessageText(), contact);
                 notificationStatus = sentSmsMessage(smsRequest);
-            }
-            else{
+            } else if(isEmail(contact)){
+                MailRequest mailRequest = new MailRequest(notificationRequest.getMessageText(), contact);
+                notificationStatus = sentMailMessage(mailRequest);
+            }else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
             }
             notificationStatus.setName(notificationRequest.getName());
@@ -39,6 +42,29 @@ public class NotificationService {
             notificationStatusList.add(notificationStatus);
         }
         return notificationStatusList;
+    }
+
+    private NotificationStatus sentFakeMessage(FakeMessageRequest fakeMessageRequest) {
+        try {
+            String messageId = webClientBuilder.build()
+                    .post()
+                    .uri("http://fake-message-service/fakeMessage/sent")
+                    .body(Mono.just(fakeMessageRequest), FakeMessageRequest.class)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            NotificationStatus notificationStatus = new NotificationStatus();
+            if(messageId != null && messageId.length() == 13){
+                notificationStatus.setStatus("Delivered");
+                notificationStatus.setSentMessageId(messageId);
+            }else{
+                notificationStatus.setStatus("Not Delivered");
+            }
+            return notificationStatus;
+        }catch (Exception e){
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public NotificationStatus sentSmsMessage(SmsRequest smsRequest) {
@@ -85,6 +111,11 @@ public class NotificationService {
         }catch (Exception e){
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private boolean isFakeMessage(String contact) {
+        String fakeMail = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@fake.com";
+        return contact.matches(fakeMail);
     }
 
     public boolean isEmail(String email) {

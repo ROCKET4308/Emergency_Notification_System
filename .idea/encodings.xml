@@ -7,6 +7,8 @@
     <file url="file://$PROJECT_DIR$/Backend/api-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/auth-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/discovery-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Backend/fake-message-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Backend/fake-message-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/mail-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/message-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Backend/message-service/src/main/resources" charset="UTF-8" />

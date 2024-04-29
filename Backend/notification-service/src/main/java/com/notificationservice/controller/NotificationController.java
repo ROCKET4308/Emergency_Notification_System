@@ -24,14 +24,7 @@ public class NotificationController {
     @PostMapping("sent")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> sentMessage(@RequestBody NotificationRequest notificationRequest){
-
-//        Map<String, String> notificationStatusMap = new HashMap<>();
-
         List<NotificationStatus> notificationStatusList = messageService.sentMessage(notificationRequest);
-
-//        for (NotificationStatus notification : notificationStatusList) {
-//            notificationStatusMap.put(notification.getRecipientContact(), notification.getStatus());
-//        }
 
         return webClientBuilder.build()
                         .post()
@@ -40,8 +33,6 @@ public class NotificationController {
                         .retrieve()
                         .bodyToMono(Map.class)
                         .block();
-
-//        return notificationStatusMap;
     }
 
     @PostMapping("retrySent")
