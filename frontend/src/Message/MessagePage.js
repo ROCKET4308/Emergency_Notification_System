@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import SentMessagePageCSS from './SentMessagePage.module.css';
+import SentMessagePageCSS from './MessagePage.module.css';
 import * as XLSX from 'xlsx';
 
 function SentPage() {
@@ -42,8 +42,8 @@ function SentPage() {
 
     console.log(requestBody);
 
-    // Make the API request to http://localhost:8080/massage/mail
-    axios.post('http://localhost:8080/massage/mail', requestBody)
+    // Make the API request to http://localhost:8080/message-service/message/sent/{MessageName}
+    axios.post('http://localhost:8080/message-service/message/sent', requestBody)
       .then(response => {
         console.log('API Response:', response.data);
       })

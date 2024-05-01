@@ -56,9 +56,13 @@ public class AuthenticationService {
     }
 
     public Boolean verify(String authorizationHeader) {
-        String jwtToken = authorizationHeader.replace("Bearer ", "");
-        String email = jwtService.extractUsername(jwtToken);
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
-        return jwtService.isTokenValid(jwtToken, user);
+        try {
+            String jwtToken = authorizationHeader.replace("Bearer ", "");
+            String email = jwtService.extractUsername(jwtToken);
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with this email "+ email + " is not exist"));
+            return jwtService.isTokenValid(jwtToken, user);
+        }catch (Exception e){
+            throw new IllegalArgumentException(e);
+        }
     }
 }

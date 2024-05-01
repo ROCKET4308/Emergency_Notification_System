@@ -41,14 +41,15 @@ const Register = (props) => {
     };
   
     try {
-      // Make the API request to http://localhost:8080/auth/register
-      const response = await axios.post('http://localhost:8080/auth/register', requestBody);
+      // Make the API request to http://localhost:8080/auth-service/auth/register
+      delete axios.defaults.headers.common['Authorization'];
+      const response = await axios.post('http://localhost:8080/auth-service/auth/register', requestBody);
       console.log('API Response:', response.data);
       const token = response.data.token;
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       localStorage.setItem("token", token);
   
-      const verifyResponse = await axios.get('http://localhost:8080/auth/verify');
+      const verifyResponse = await axios.get('http://localhost:8080/auth-service/auth/verify');
       if (verifyResponse.data) {
         setIsLoggedIn(true);
       } else {

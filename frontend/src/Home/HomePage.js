@@ -1,7 +1,7 @@
 import React from 'react';
-import HomePageWithLoginCSS from './HomePageWithLogin.module.css';
+import HomePageWithLoginCSS from './HomePage.module.css';
 import { useNavigate } from 'react-router-dom';
-import Template from '../TemplateList/Template';
+import Message from './MessageList/Message';
 
 const Home = (props) => {
   const navigate = useNavigate();
@@ -11,8 +11,8 @@ const Home = (props) => {
     navigate('/sentMessage');
   }
 
-  const createMessageTemplate = () => {
-    navigate('/createMessageTemplate'); 
+  const createMessage = () => {
+    navigate('/createMessage'); 
   }
   //TODO: set same icon to show avatar of user
   //TODO: show user real template or write that there is no template for user
@@ -24,18 +24,18 @@ const Home = (props) => {
           <button className={HomePageWithLoginCSS.inputButton} onClick={sentMessage}>Sent Message</button>
         </div>
         <div className={HomePageWithLoginCSS.homeButton}>
-          <button className={HomePageWithLoginCSS.inputButton} onClick={createMessageTemplate}>Create Message Template</button>
+          <button className={HomePageWithLoginCSS.inputButton} onClick={createMessage}>Create Message</button>
         </div>
         <div className={HomePageWithLoginCSS.inputButton}>
           <img></img>
         </div>
       </div>
-      <div className={HomePageWithLoginCSS.templateContainer}>
-        <Template/>
-        <Template/>
-        <Template/>
-        <Template/>
-        <Template/>
+      <div className={HomePageWithLoginCSS.messageContainer}>
+        <Message/>
+        <Message/>
+        <Message/>
+        <Message/>
+        <Message/>
       </div>
     </div>
   )
