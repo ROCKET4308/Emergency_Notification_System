@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("sms")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class SmsController {
     private final SmsService smsService;
 

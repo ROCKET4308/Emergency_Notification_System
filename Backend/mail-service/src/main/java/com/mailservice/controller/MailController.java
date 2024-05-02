@@ -12,7 +12,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("mail")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class MailController {
     private final MailService mailService;
 

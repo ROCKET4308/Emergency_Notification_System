@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("message")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class MessageController {
     private final MessageService messageService;
 

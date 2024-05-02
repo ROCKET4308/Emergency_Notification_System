@@ -12,7 +12,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("rebalance")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class RebalanceController{
     private final RebalanceService rebalanceService;
 
