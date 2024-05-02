@@ -4,7 +4,9 @@ import HomePage from '../Home/HomePage'
 import AppCSS from'./App.module.css'
 import Login from '../Auth/Login/LoginPage'
 import Register from '../Auth/Register/RegisterPage'
-import SentMessagePage from '../Message/MessagePage'
+import MessagePage from '../Message/MessagePage'
+import CreateMessagePage from '../Message/CreateMessagePage'
+import EditMessagePage from '../Message/EditMessagePage'
 import axios from 'axios';
 
 function App() {
@@ -33,9 +35,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={isLoggedIn ? <HomePage /> : <Navigate to="/auth/login" /> }/>
-          <Route path="/auth/login" element={isLoggedIn ? <HomePage /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/auth/login" element={isLoggedIn ? <Navigate to="/home" /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/auth/register" element={<Register setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/sentMessage" element={<SentMessagePage />} />
+          <Route path="/message" element={<MessagePage />} />
+          <Route path="/message/create" element={<CreateMessagePage />} />
+          <Route path="/message/edit" element={<EditMessagePage />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,12 +1,15 @@
 import React from 'react';
 import MessageCSS from './Message.module.css'
 
-const Template = (props) => {
+const Message = ({ message }) => {
+  console.log('Message:', message);
   return (
-    <div className={MessageCSS.template}>Some text over here to blur text over here to blur 
-        <button className={MessageCSS.templateButton}>Update</button><button className={MessageCSS.templateButton}>Delete</button>
+    <div className={MessageCSS.template}>
+      <p>{message}</p>
+      <button className={MessageCSS.templateButton}>Update</button>
+      <button className={MessageCSS.templateButton}>Delete</button>
     </div>
   )
 }
 
-export default Template
+export default Message;
