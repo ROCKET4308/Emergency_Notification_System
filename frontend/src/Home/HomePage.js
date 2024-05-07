@@ -36,7 +36,6 @@ const Home = (props) => {
     navigate('/message/edit'); 
   }
   //TODO: set same icon to show avatar of user
-  //TODO: show user real template or write that there is no template for user
 
   return (
     <div className={HomePageWithLoginCSS.mainContainer}>
@@ -50,7 +49,9 @@ const Home = (props) => {
       </div>
       <div className={HomePageWithLoginCSS.messageContainer}>
         {Object.keys(messages).flat().map(message => (
-          <Message key={message.id} message={message} />
+          <div onClick={() => messagePage(message)}>
+            <Message key={message.id} message={message} />
+          </div>
         ))}
       </div>
     </div>

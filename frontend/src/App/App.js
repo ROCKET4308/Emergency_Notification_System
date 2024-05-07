@@ -37,9 +37,9 @@ function App() {
           <Route path="/home" element={isLoggedIn ? <HomePage /> : <Navigate to="/auth/login" /> }/>
           <Route path="/auth/login" element={isLoggedIn ? <Navigate to="/home" /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/auth/register" element={<Register setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/message" element={<MessagePage />} />
+          <Route path="/message/:messageName" element={<MessagePage />} />
           <Route path="/message/create" element={<CreateMessagePage />} />
-          <Route path="/message/edit" element={<EditMessagePage />} />
+          <Route path="/message/edit/:messageName" element={<EditMessagePage />} />
         </Routes>
       </BrowserRouter>
     </div>

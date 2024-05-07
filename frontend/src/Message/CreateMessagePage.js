@@ -3,11 +3,13 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import CreateMessagePageCSS from './CreateMessagePage.module.css';
 import * as XLSX from 'xlsx';
+import { useNavigate } from 'react-router-dom';
 
 function CreatePage() {
   const [recipientContacts, setRecipientContacts] = useState([]);
   const [messageText, setMessageText] = useState('');
   const [messageName, setMessageName] = useState('');
+  const navigate = useNavigate();
 
   const onDrop = useCallback((acceptedFiles) => {
     const reader = new FileReader();
@@ -48,6 +50,7 @@ function CreatePage() {
     axios.post('http://localhost:8080/message-service/message/create', requestBody)
       .then(response => {
         console.log('API Response:', response.data);
+        navigate('/home')
       })
       .catch(error => {
         console.error('API Error:', error);
