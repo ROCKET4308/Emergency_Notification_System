@@ -3,7 +3,8 @@ import RegisterPageCSS from './RegisterPage.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
  
-function Register() {
+const Register = (props) => {
+  const { setIsLoggedIn } = props
  
   const [input, setInput] = useState({
     email: '',
@@ -28,7 +29,7 @@ function Register() {
     validateInput(e);
   }
 
-  const onButtonClick = () => {
+  const onButtonClick = async () => {
     if (input.password !== input.confirmPassword) {
       console.log('Passwords do not match');
       return;
@@ -39,17 +40,28 @@ function Register() {
       password: input.password,
     };
   
-    // Make the API request to http://localhost:8080/auth/register
-    axios
-      .post('http://localhost:8080/auth/register', requestBody)
-      .then((response) => {
-        console.log('API Response:', response.data);
-        navigate('/withLogin');
-      })
-      .catch((error) => {
-        console.error('API Error:', error);
-      });
+    try {
+      // Make the API request to http://localhost:8080/auth-service/auth/register
+      delete axios.defaults.headers.common['Authorization'];
+      const response = await axios.post('http://localhost:8080/auth-service/auth/register', requestBody);
+      console.log('API Response:', response.data);
+      const token = response.data.token;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      localStorage.setItem("token", token);
+  
+      const verifyResponse = await axios.get('http://localhost:8080/auth-service/auth/verify');
+      if (verifyResponse.data) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      navigate('/home');
+    } catch (error) {
+      console.error('API Error:', error);
+      console.error('Error checking user verification:', error);
+    }
   };
+  
   
   
  

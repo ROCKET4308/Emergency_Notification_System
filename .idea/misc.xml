@@ -5,7 +5,25 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/Backend/notification-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/eureka-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/mail-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/sms-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/worker-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/rebalance-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/message-template-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/api-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/message-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/discovery-server/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/fake-message-service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/Backend/api-service/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/worker-service/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="20" project-jdk-type="JavaSDK">
