@@ -23,11 +23,6 @@ const Home = (props) => {
     getMessages();
   }, []);
 
-
-  const messagePage = (messageName) => {
-    navigate(`/message/${messageName}`);
-  }
-
   const createMessage = () => {
     navigate('/message/create'); 
   }
@@ -49,9 +44,7 @@ const Home = (props) => {
       </div>
       <div className={HomePageWithLoginCSS.messageContainer}>
         {Object.keys(messages).flat().map(message => (
-          <div onClick={() => messagePage(message)}>
-            <Message key={message.id} message={message} />
-          </div>
+          <Message key={message.id} message={message} />
         ))}
       </div>
     </div>

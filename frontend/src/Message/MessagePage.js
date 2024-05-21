@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import MessagePageCSS from './MessagePage.module.css'; // Assuming you have a CSS module for styling
+import MessagePageCSS from './MessagePage.module.css';
 
 function MessagePage() {
   const { messageName } = useParams();

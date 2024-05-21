@@ -85,6 +85,10 @@ const Login = (props) => {
     });
   }
 
+  const register = () => {
+    navigate('/auth/register'); 
+  }
+
   const isValidEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
@@ -113,6 +117,8 @@ const Login = (props) => {
         {error.password && <span className={LoginPageCSS.err}>{error.password}</span>}
  
         <button onClick={onButtonClick}>Submit</button>
+        <p>-------------- or --------------</p>
+        <button onClick={register}>Register</button>
       </div>
     </div>
   );

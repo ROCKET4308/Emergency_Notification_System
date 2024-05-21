@@ -108,6 +108,10 @@ const Register = (props) => {
   const isValidEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
+
+  const login = () => {
+    navigate('/auth/login'); 
+  }
  
   return (
     <div className={RegisterPageCSS.app}>
@@ -142,6 +146,8 @@ const Register = (props) => {
         {error.confirmPassword && <span className={RegisterPageCSS.err}>{error.confirmPassword}</span>}
  
         <button onClick={onButtonClick}>Submit</button>
+        <p>-------------- or --------------</p>
+        <button onClick={login}>Login</button>
       </div>
     </div>
   );
