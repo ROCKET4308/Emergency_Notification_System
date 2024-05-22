@@ -59,7 +59,7 @@ public class MessageService {
 
     public String deleteMessage(String name, String authorizationHeader) {
         String email = getEmailByToken(authorizationHeader);
-        if(messageRepository.findByEmailAndName(email, name).isEmpty()){
+        if(messageRepository.findAllByEmailAndName(email, name).isEmpty()){
             throw new IllegalArgumentException("Error to find message with name "+ name);
         }
         List<Message> messageDeletedList = messageRepository.deleteAllByEmailAndName(email, name);
