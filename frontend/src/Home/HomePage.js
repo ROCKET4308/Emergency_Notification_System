@@ -7,29 +7,32 @@ import { useState, useEffect } from 'react';
 
 const Home = (props) => {
   const [messages, setMessages] = useState([]);
+  const [refreshMessages, setRefreshMessages] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getMessages = async () => {
       try {
+        await new Promise(resolve => setTimeout(resolve, 500));
         const response = await axios.get('http://localhost:8080/message-service/message/get');
         console.log('Response:', response.data);
         setMessages(response.data);
       } catch (error) {
+        setMessages([]);
         console.error('Failed to get messages:', error);
       }
     };
-
     getMessages();
-  }, []);
+  }, [refreshMessages]);
 
   const createMessage = () => {
     navigate('/message/create'); 
   }
 
-  const editMessage = () => {
-    navigate('/message/edit'); 
-  }
+  const refreshMessageList = () => {
+    setRefreshMessages(prevState => !prevState);
+  };
+
   //TODO: set same icon to show avatar of user
 
   return (
@@ -42,9 +45,9 @@ const Home = (props) => {
           <img></img>
         </div>
       </div>
-      <div className={HomePageWithLoginCSS.messageContainer}>
+      <div className={HomePageWithLoginCSS.messageContainer} onClick={refreshMessageList}>
         {Object.keys(messages).flat().map(message => (
-          <Message key={message.id} message={message} />
+          <Message key={message.id} message={message}/>
         ))}
       </div>
     </div>
