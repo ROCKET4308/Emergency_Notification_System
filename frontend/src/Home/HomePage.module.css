@@ -4,42 +4,65 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background: #71c0b9;
+    font-family: 'Arial', sans-serif;
     position: relative;
-}
+  }
   
-.buttonContainer {
+  .buttonContainer {
     position: absolute;
     top: 10px;
     right: 10px;
     display: flex;
     flex-direction: row;
-}
+    align-items: center;
+  }
   
-.inputButton {
-    padding: 5px 10px;
-    margin: 0 5px;
-    background-color: #f44336;
+  .inputButton {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #d1686d;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 14px;
-}
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
   
-.inputButton:hover {
-    background-color: #d32f2f;
-}
+  .inputButton:hover {
+    background-color: #be585d;
+  }
   
-.inputButton:active {
-  background-color: #b71c1c;
-}
+  .inputButton:active {
+    background-color: #9c4449;
+  }
   
+  .avatarContainer {
+    display: flex;
+    align-items: center;
+  }
   
-.messageContainer {
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .avatar:hover {
+    transform: scale(1.1);
+  }
+  
+  .messageContainer {
     width: 600px;
     height: 600px;
-    border: 1px solid #000000;
     border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-}
+    overflow-y: auto;
+    border: 2px solid #e7bf6e;
+    background-color: #e7bf6e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+  

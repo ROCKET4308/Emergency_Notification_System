@@ -33,7 +33,6 @@ const Home = (props) => {
     setRefreshMessages(prevState => !prevState);
   };
 
-  //TODO: set same icon to show avatar of user
 
   return (
     <div className={HomePageWithLoginCSS.mainContainer}>
@@ -41,8 +40,9 @@ const Home = (props) => {
         <div className={HomePageWithLoginCSS.homeButton}>
           <button className={HomePageWithLoginCSS.inputButton} onClick={createMessage}>Create Message</button>
         </div>
-        <div className={HomePageWithLoginCSS.inputButton}>
-          <img></img>
+        <div className={HomePageWithLoginCSS.avatarContainer}>
+          {/* <img src="path/to/avatar.png" alt="User Avatar" className={HomePageWithLoginCSS.avatar} />
+          <button className={HomePageWithLoginCSS.logoutButton} onClick={logout}>Logout</button> */}
         </div>
       </div>
       <div className={HomePageWithLoginCSS.messageContainer} onClick={refreshMessageList}>
@@ -51,7 +51,7 @@ const Home = (props) => {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 export default Home

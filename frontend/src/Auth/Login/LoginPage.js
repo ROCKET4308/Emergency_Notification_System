@@ -95,30 +95,39 @@ const Login = (props) => {
  
   return (
     <div className={LoginPageCSS.app}>
-      <h4>Login</h4>
-      <div className={LoginPageCSS.form}>
- 
-        <input
-          type="text"
-          name="email"
-          placeholder='Enter Email'
-          value={input.email}
-          onChange={onInputChange}
-          onBlur={validateInput}></input>
-        {error.email && <span className={LoginPageCSS.err}>{error.email}</span>}
- 
-        <input
-          type="password"
-          name="password"
-          placeholder='Enter Password'
-          value={input.password}
-          onChange={onInputChange}
-          onBlur={validateInput}></input>
-        {error.password && <span className={LoginPageCSS.err}>{error.password}</span>}
- 
-        <button onClick={onButtonClick}>Submit</button>
-        <p>-------------- or --------------</p>
-        <button onClick={register}>Register</button>
+      <div className={LoginPageCSS.container}>
+        <h4 className={LoginPageCSS.header}>Login</h4>
+        <div className={LoginPageCSS.form}>
+          <input
+            type="text"
+            name="email"
+            placeholder='Enter Email'
+            value={input.email}
+            onChange={onInputChange}
+            onBlur={validateInput}
+            className={LoginPageCSS.input}
+          />
+          {error.email && <span className={LoginPageCSS.err}>{error.email}</span>}
+
+          <input
+            type="password"
+            name="password"
+            placeholder='Enter Password'
+            value={input.password}
+            onChange={onInputChange}
+            onBlur={validateInput}
+            className={LoginPageCSS.input}
+          />
+          {error.password && <span className={LoginPageCSS.err}>{error.password}</span>}
+
+          <button onClick={onButtonClick} className={LoginPageCSS.button}>Login</button>
+          <div className={LoginPageCSS.separator}>
+            <hr className={LoginPageCSS.hrLeft}/>
+            <span>or</span>
+            <hr className={LoginPageCSS.hrRight}/>
+          </div>
+          <button onClick={register} className={LoginPageCSS.button}>Register</button>
+        </div>
       </div>
     </div>
   );

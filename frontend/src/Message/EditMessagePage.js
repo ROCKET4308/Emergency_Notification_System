@@ -47,38 +47,43 @@ function EditMessagePage() {
   }
 
   return (
-    <div>
-      <div>
+    <div className={EditMessagePageCSS.mainContainer}>
+      <div className={EditMessagePageCSS.formContainer}>
         <h2>Edit Message</h2>
-        <label>
-          Name:
-          <input 
-            type="text" 
-            value={updatedName} 
-            onChange={(e) => setUpdatedName(e.target.value)} 
-          />
-        </label>
+        <div className={EditMessagePageCSS.inputContainer}>
+          <label>
+            Name:
+            <input 
+              type="text" 
+              value={updatedName} 
+              onChange={(e) => setUpdatedName(e.target.value)} 
+              className={EditMessagePageCSS.inputField} 
+            />
+          </label>
+        </div>
+        <div className={EditMessagePageCSS.inputContainer}>
+          <label>
+            Message Text:
+            <textarea 
+              value={updatedText} 
+              onChange={(e) => setUpdatedText(e.target.value)} 
+              className={EditMessagePageCSS.inputField} 
+            />
+          </label>
+        </div>
+        <div className={EditMessagePageCSS.inputContainer}>
+          <label>
+            Recipient Contacts (one per line):
+            <textarea
+              value={updatedContacts.join('\n')}
+              onChange={(e) => setUpdatedContacts(e.target.value.split('\n').map(contact => contact.trim()))}
+              className={EditMessagePageCSS.inputField}
+              style={{ height: '200px' }}
+            />
+          </label>
+        </div>
+        <button onClick={edit} className={EditMessagePageCSS.button}>Save</button>
       </div>
-      <div>
-        <label>
-          Message Text:
-          <textarea 
-            value={updatedText} 
-            onChange={(e) => setUpdatedText(e.target.value)} 
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Recipient Contacts (comma separated):
-          <input 
-            type="text" 
-            value={updatedContacts.join(', ')} 
-            onChange={(e) => setUpdatedContacts(e.target.value.split(',').map(contact => contact.trim()))} 
-          />
-        </label>
-      </div>
-      <button onClick={edit}>Save</button>
     </div>
   );
 }

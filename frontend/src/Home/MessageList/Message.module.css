@@ -11,6 +11,8 @@
     background-color: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease-in-out;
+    font-size: large;
+    font-weight: bold;
   }
   
   .template:hover {
@@ -29,18 +31,24 @@
     gap: 10px;
   }
   
+
   .templateButton {
-    padding: 8px 16px;
-    background-color: #706e6e;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #d1686d;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease-in-out;
+    font-size: 16px;
+    transition: background-color 0.3s;
   }
   
   .templateButton:hover {
-    background-color: #5c5a5a;
+    background-color: #be585d;
+  }
+  
+  .templateButton:active {
+    background-color: #9c4449;
   }
   

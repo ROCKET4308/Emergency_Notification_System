@@ -115,39 +115,50 @@ const Register = (props) => {
  
   return (
     <div className={RegisterPageCSS.app}>
-      <h4>Registration</h4>
-      <div className={RegisterPageCSS.form}>
- 
-        <input
-          type="text"
-          name="email"
-          placeholder='Enter Email'
-          value={input.email}
-          onChange={onInputChange}
-          onBlur={validateInput}></input>
-        {error.email && <span className={RegisterPageCSS.err}>{error.email}</span>}
- 
-        <input
-          type="password"
-          name="password"
-          placeholder='Enter Password'
-          value={input.password}
-          onChange={onInputChange}
-          onBlur={validateInput}></input>
-        {error.password && <span className={RegisterPageCSS.err}>{error.password}</span>}
- 
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder='Enter Confirm Password'
-          value={input.confirmPassword}
-          onChange={onInputChange}
-          onBlur={validateInput}></input>
-        {error.confirmPassword && <span className={RegisterPageCSS.err}>{error.confirmPassword}</span>}
- 
-        <button onClick={onButtonClick}>Submit</button>
-        <p>-------------- or --------------</p>
-        <button onClick={login}>Login</button>
+      <div className={RegisterPageCSS.container}>
+        <h4 className={RegisterPageCSS.header}>Registration</h4>
+        <div className={RegisterPageCSS.form}>
+          <input
+            type="text"
+            name="email"
+            placeholder='Enter Email'
+            value={input.email}
+            onChange={onInputChange}
+            onBlur={validateInput}
+            className={RegisterPageCSS.input}
+          />
+          {error.email && <span className={RegisterPageCSS.err}>{error.email}</span>}
+
+          <input
+            type="password"
+            name="password"
+            placeholder='Enter Password'
+            value={input.password}
+            onChange={onInputChange}
+            onBlur={validateInput}
+            className={RegisterPageCSS.input}
+          />
+          {error.password && <span className={RegisterPageCSS.err}>{error.password}</span>}
+
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder='Confirm Password'
+            value={input.confirmPassword}
+            onChange={onInputChange}
+            onBlur={validateInput}
+            className={RegisterPageCSS.input}
+          />
+          {error.confirmPassword && <span className={RegisterPageCSS.err}>{error.confirmPassword}</span>}
+
+          <button onClick={onButtonClick} className={RegisterPageCSS.button}>Register</button>
+          <div className={RegisterPageCSS.separator}>
+            <hr className={RegisterPageCSS.hrLeft}/>
+            <span>or</span>
+            <hr className={RegisterPageCSS.hrRight}/>
+          </div>
+          <button onClick={login} className={RegisterPageCSS.button}>Login</button>
+        </div>
       </div>
     </div>
   );

@@ -63,11 +63,13 @@ function CreatePage() {
   });
 
   return (
-    <div className={CreateMessagePageCSS.CreateMassagePage}>
-        <div className={CreateMessagePageCSS.TextArea}>
+    <div className={CreateMessagePageCSS.mainContainer}>
+        <div>
             <textarea
+            className={CreateMessagePageCSS.nameTextArea}
             value={messageName}
             onChange={(e) => setMessageName(e.target.value)}
+            placeholder="Write down messag name"
             >
             Write message name
             </textarea>
@@ -76,15 +78,15 @@ function CreatePage() {
             <input {...getInputProps()} />
             <p>Drag 'n' drop CSV or XLS file here, or click to select files</p>
         </div>
-        <div className={CreateMessagePageCSS.TextArea}>
-            <textarea
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-            >
-            Write down some text
-            </textarea>
+        <div>
+          <textarea
+              className={CreateMessagePageCSS.messageTextArea}
+              value={messageText}
+              onChange={(e) => setMessageText(e.target.value)}
+              placeholder="Write down messag text"
+          />
         </div>
-        <button onClick={handleButtonClick}>Create message</button>
+        <button onClick={handleButtonClick} className={CreateMessagePageCSS.inputButton}>Create message</button>
     </div>
   );
 }

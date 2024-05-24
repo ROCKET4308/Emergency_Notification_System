@@ -1,4 +1,4 @@
-.SentMassagePage {
+.mainContainer {
     background-color: #71c0b9;
     display: flex;
     flex-direction: column;
@@ -7,38 +7,52 @@
     height: 100vh;
   }
   
-  .DragNDrop {
+  .messageList{
     padding: 20px;
     text-align: center;
     cursor: pointer;
     background-color: #e7bf6e;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    list-style: none;
   }
   
-  .TextArea textarea {
-    width: 100%;
-    height: 120px;
-    padding: 12px 20px;
+  .messageContainer {
+    width: 20%;
+    padding: 10px 10px;
     box-sizing: border-box;
     font-size: 16px;
     resize: none;
     border: 2px solid #e7bf6e;
     background-color: #e7bf6e;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
-  button {
+  .inputButton {
     padding: 10px 20px;
-    background-color: #D1686D;
+    margin: 0 10px;
+    background-color: #d1686d;
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
   }
   
-  button:hover {
+  .inputButton:hover {
     background-color: #be585d;
   }
+  
+  .inputButton:active {
+    background-color: #9c4449;
+  }
+
+
+
+
+  
+
+  
   
