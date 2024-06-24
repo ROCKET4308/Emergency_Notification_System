@@ -4,6 +4,7 @@ import com.messageservice.entity.Message;
 import com.messageservice.request.MessageRequest;
 import com.messageservice.response.MessageResponse;
 import com.messageservice.service.MessageService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,14 @@ public class MessageController {
 
     @PostMapping("sent/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, String> sentMessage(@PathVariable String name, @RequestHeader("Authorization") String authorizationHeader){
+    @CircuitBreaker(name = "sentMessage", fallbackMethod = "sentMessageFallbackMethod")
+    public Map<String, String> sentMessage(@PathVariable String name, @RequestHeader("Authorization") String authorizationHeader) {
         return messageService.sentMessage(name, authorizationHeader);
+    }
+
+    public Map<String, String> sentMessageFallbackMethod(String name, String authorizationHeader, RuntimeException runtimeException) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Ooops! Something went wrong when sent message!");
+        return response;
     }
 }
