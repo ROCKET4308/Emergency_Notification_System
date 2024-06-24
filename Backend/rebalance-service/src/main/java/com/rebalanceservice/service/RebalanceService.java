@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -23,10 +24,11 @@ public class RebalanceService {
 
         while (iterator.hasNext()) {
             NotificationStatus notification = iterator.next();
-            if (!"Delivered".equals(notification.getStatus())) { // Use .equals for string comparison
+            if (!"Delivered".equals(notification.getStatus())) {
                 notDeliveredNotificationContactList.add(notification.getRecipientContact());
-                iterator.remove(); // Remove using iterator
+                iterator.remove();
             } else {
+                notification.setMessageSentTime(LocalDateTime.now());
                 notificationStatusRepository.save(notification);
                 notificationStatusMap.put(notification.getRecipientContact(), notification.getStatus());
             }
@@ -47,6 +49,7 @@ public class RebalanceService {
                     .block();
 
             for (NotificationStatus notification : notificationRetryStatusList) {
+                notification.setMessageSentTime(LocalDateTime.now());
                 notificationStatusRepository.save(notification);
                 notificationStatusMap.put(notification.getRecipientContact(), notification.getStatus());
             }
