@@ -7,22 +7,24 @@
     height: 100vh;
   }
   
-  .messageList{
+  .messageList {
     padding: 20px;
     text-align: center;
-    cursor: pointer;
     background-color: #e7bf6e;
     border-radius: 10px;
     margin-bottom: 10px;
     list-style: none;
+    max-height: 400px;
+    overflow-y: auto; 
   }
+  
   
   .messageContainer {
     width: 20%;
+    resize: none;
     padding: 10px 10px;
     box-sizing: border-box;
     font-size: 16px;
-    resize: none;
     border: 2px solid #e7bf6e;
     background-color: #e7bf6e;
     border-radius: 10px;

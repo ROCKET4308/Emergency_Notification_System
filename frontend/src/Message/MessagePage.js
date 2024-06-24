@@ -49,7 +49,7 @@ function MessagePage() {
             </li>
           ))}
         </ul>
-        <button onClick={handleButtonClick} className={MessagePageCSS.inputButton}>Create message</button>
+        <button onClick={handleButtonClick} className={MessagePageCSS.inputButton}>Sent message</button>
     </div>
   );
 }
