@@ -1,11 +1,13 @@
 package com.messageservice.service;
 
 import com.messageservice.entity.Message;
+import com.messageservice.event.MessageCreateEvent;
 import com.messageservice.repository.MessageRepository;
 import com.messageservice.request.MessageRequest;
 import com.messageservice.response.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate kafkaTemplate;
 
 
     public MessageResponse createMessage(MessageRequest messageRequest, String authorizationHeader) {
@@ -29,6 +32,7 @@ public class MessageService {
             Message message = Message.builder().email(email).name(messageRequest.getName())
                     .recipientContact(recipientContact).messageText(messageRequest.getMessageText()).build();
             messageRepository.save(message);
+            kafkaTemplate.send("notificationTopic", new MessageCreateEvent(message.getName(), message.getMessageText(), message.getRecipientContact()));
         }
 
         return MessageResponse.builder().name(messageRequest.getName()).messageText(messageRequest.getMessageText())
