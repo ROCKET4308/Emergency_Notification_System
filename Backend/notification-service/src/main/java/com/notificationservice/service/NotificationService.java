@@ -1,115 +1,31 @@
 package com.notificationservice.service;
 
-import com.notificationservice.entity.NotificationStatus;
-import com.notificationservice.request.FakeMessageRequest;
-import com.notificationservice.request.MailRequest;
-import com.notificationservice.request.NotificationRequest;
-import com.notificationservice.request.SmsRequest;
+import com.notificationservice.entity.Notification;
+import com.notificationservice.kafka.KafkaProducer;
+import com.notificationservice.request.MessageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
-    private final WebClient.Builder webClientBuilder;
+    private final KafkaProducer kafkaProducer;
 
-    public List<NotificationStatus> sentMessage(NotificationRequest notificationRequest) {
-        List<NotificationStatus> notificationStatusList = new ArrayList<>();
-        List<String> contacts = notificationRequest.getRecipientContacts();
+    public void sentMessage(MessageRequest messageRequest) {
+        List<String> contacts = messageRequest.getRecipientContacts();
         for(String contact : contacts){
-            NotificationStatus notificationStatus;
+            Notification notification = new Notification(messageRequest.getName(), messageRequest.getMessageText(), contact);
             if (isFakeMessage(contact)) {
-                FakeMessageRequest fakeMessageRequest = new FakeMessageRequest(notificationRequest.getMessageText(), contact);
-                notificationStatus = sentFakeMessage(fakeMessageRequest);
+                kafkaProducer.sentFake(notification);
             }
             else if(isPhoneNumber(contact)){
-                SmsRequest smsRequest = new SmsRequest(notificationRequest.getMessageText(), contact);
-                notificationStatus = sentSmsMessage(smsRequest);
+                kafkaProducer.sentSms(notification);
             } else if(isEmail(contact)){
-                MailRequest mailRequest = new MailRequest(notificationRequest.getMessageText(), contact);
-                notificationStatus = sentMailMessage(mailRequest);
+                kafkaProducer.sentMail(notification);
             }else{
                 throw new IllegalArgumentException("Not valid contact: " + contact);
             }
-            notificationStatus.setName(notificationRequest.getName());
-            notificationStatus.setMessageText(notificationRequest.getMessageText());
-            notificationStatus.setRecipientContact(contact);
-            notificationStatusList.add(notificationStatus);
-        }
-        return notificationStatusList;
-    }
-
-    private NotificationStatus sentFakeMessage(FakeMessageRequest fakeMessageRequest) {
-        try {
-            String messageId = webClientBuilder.build()
-                    .post()
-                    .uri("http://fake-message-service/fakeMessage/sent")
-                    .body(Mono.just(fakeMessageRequest), FakeMessageRequest.class)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-
-            NotificationStatus notificationStatus = new NotificationStatus();
-            if(messageId != null && messageId.length() == 13){
-                notificationStatus.setStatus("Delivered");
-                notificationStatus.setSentMessageId(messageId);
-            }else{
-                notificationStatus.setStatus("Not Delivered");
-            }
-            return notificationStatus;
-        }catch (Exception e){
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    public NotificationStatus sentSmsMessage(SmsRequest smsRequest) {
-        try {
-                String messageId = webClientBuilder.build()
-                        .post()
-                        .uri("http://sms-service/sms/sent")
-                        .body(Mono.just(smsRequest), SmsRequest.class)
-                        .retrieve()
-                        .bodyToMono(String.class)
-                        .block();
-
-                NotificationStatus notificationStatus = new NotificationStatus();
-                if(messageId != null && messageId.length() == 34){
-                    notificationStatus.setStatus("Delivered");
-                    notificationStatus.setSentMessageId(messageId);
-                }else{
-                    notificationStatus.setStatus("Not Delivered");
-                }
-                return notificationStatus;
-        }catch (Exception e){
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    public NotificationStatus sentMailMessage(MailRequest mailRequest) {
-        try {
-                String messageId =  webClientBuilder.build()
-                        .post()
-                        .uri("http://mail-service/mail/sent")
-                        .body(Mono.just(mailRequest), MailRequest.class)
-                        .retrieve()
-                        .bodyToMono(String.class)
-                        .block();;
-
-                NotificationStatus notificationStatus = new NotificationStatus();
-                if(messageId != null && messageId.length() == 22){
-                    notificationStatus.setStatus("Delivered");
-                    notificationStatus.setSentMessageId(messageId);
-                }else{
-                    notificationStatus.setStatus("Not Delivered");
-                }
-                return notificationStatus;
-        }catch (Exception e){
-            throw new IllegalArgumentException(e);
         }
     }
 

@@ -1,16 +1,14 @@
 package com.messageservice.service;
 
 import com.messageservice.entity.Message;
-import com.messageservice.event.MessageCreateEvent;
+import com.messageservice.kafka.KafkaProducer;
 import com.messageservice.repository.MessageRepository;
 import com.messageservice.request.MessageRequest;
 import com.messageservice.response.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,8 +18,7 @@ import java.util.stream.Collectors;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final WebClient.Builder webClientBuilder;
-    private final KafkaTemplate kafkaTemplate;
-
+    private final KafkaProducer kafkaProducer;
 
     public MessageResponse createMessage(MessageRequest messageRequest, String authorizationHeader) {
         String email = getEmailByToken(authorizationHeader);
@@ -32,7 +29,6 @@ public class MessageService {
             Message message = Message.builder().email(email).name(messageRequest.getName())
                     .recipientContact(recipientContact).messageText(messageRequest.getMessageText()).build();
             messageRepository.save(message);
-            kafkaTemplate.send("notificationTopic", new MessageCreateEvent(message.getName(), message.getMessageText(), message.getRecipientContact()));
         }
 
         return MessageResponse.builder().name(messageRequest.getName()).messageText(messageRequest.getMessageText())
@@ -87,13 +83,13 @@ public class MessageService {
             if(messageMap.containsKey(messageName)){
                 messageMap.get(messageName).add(message);
             } else {
-                messageMap.put(messageName, new ArrayList<>(Arrays.asList(message)));
+                messageMap.put(messageName, new ArrayList<>(List.of(message)));
             }
         }
         return messageMap;
     }
 
-    public Map<String, String> sentMessage(String name, String authorizationHeader) {
+    public String sentMessage(String name, String authorizationHeader) {
         String email = getEmailByToken(authorizationHeader);
         List<Message> messageList = messageRepository.findAllByEmailAndName(email, name);
         if(messageList.isEmpty()){
@@ -108,14 +104,9 @@ public class MessageService {
                         .collect(Collectors.toList()))
                 .build();
 
-        return webClientBuilder.build()
-                .post()
-                .uri("http://notification-service/notification/sent")
-                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
-                .body(Mono.just(messageRequest), MessageRequest.class)
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
+        kafkaProducer.sentMessage(messageRequest);
+
+        return "Start sending message to users";
     }
 
     public String getEmailByToken(String authorizationHeader){

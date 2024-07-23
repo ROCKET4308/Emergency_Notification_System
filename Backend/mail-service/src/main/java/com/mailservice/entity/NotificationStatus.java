@@ -1,28 +1,18 @@
-package com.rebalanceservice.entity;
+package com.mailservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class NotificationStatus {
-    @Id
-    @GeneratedValue
-    private Integer id;
     private String name;
     private String messageText;
     private String recipientContact;
     private String status;
     private String sentMessageId;
-    private Integer retrySentCounter;
-    private LocalDateTime messageSentTime;
 }

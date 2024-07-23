@@ -1,18 +1,16 @@
-package com.notificationservice.request;
+package com.notificationservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class NotificationRequest {
+@AllArgsConstructor
+public class Notification {
     private String name;
     private String messageText;
-    private List<String> recipientContacts;
+    private String recipientContact;
 }

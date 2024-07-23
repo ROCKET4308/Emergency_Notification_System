@@ -1,7 +1,7 @@
 package com.mailservice.service;
 
 
-import com.mailservice.request.MailRequest;
+import com.mailservice.entity.Notification;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -21,8 +21,8 @@ public class MailService {
     @Value("${send_grid.api_key}")
     private String SEND_GRID_API_KEY;
 
-    public String sentMessage(MailRequest mailRequest) throws IOException {
-        return sentMailMessage(mailRequest.getMessageText(), mailRequest.getRecipientMail());
+    public String sentMessage(Notification notification) throws IOException {
+        return sentMailMessage(notification.getMessageText(), notification.getRecipientContact());
     }
 
     public String sentMailMessage(String messageText, String recipientMail) throws IOException {

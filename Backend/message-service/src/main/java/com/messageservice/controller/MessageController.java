@@ -52,7 +52,7 @@ public class MessageController {
     @PostMapping("sent/{name}")
     @ResponseStatus(HttpStatus.OK)
     @CircuitBreaker(name = "sentMessage", fallbackMethod = "sentMessageFallbackMethod")
-    public Map<String, String> sentMessage(@PathVariable String name, @RequestHeader("Authorization") String authorizationHeader) {
+    public String sentMessage(@PathVariable String name, @RequestHeader("Authorization") String authorizationHeader) {
         return messageService.sentMessage(name, authorizationHeader);
     }
 

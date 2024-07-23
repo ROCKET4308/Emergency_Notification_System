@@ -1,4 +1,4 @@
-package com.notificationservice.request;
+package com.rebalanceservice.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class FakeMessageRequest {
+@AllArgsConstructor
+public class NotificationStatusRequest {
+    private String name;
     private String messageText;
     private String recipientContact;
+    private String status;
+    private String sentMessageId;
 }

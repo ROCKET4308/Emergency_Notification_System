@@ -1,14 +1,15 @@
 package com.fakemessageservice.service;
 
-import com.fakemessageservice.request.FakeMessageRequest;
+import com.fakemessageservice.entity.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class FakeMessageService {
-    public String sentMessage(FakeMessageRequest fakeMessageRequest) {
-        return sentFakeMessage(fakeMessageRequest.getMessageText(), fakeMessageRequest.getRecipientContact());
+
+    public String sentMessage(Notification notification) {
+        return sentFakeMessage(notification.getMessageText(), notification.getRecipientContact());
     }
 
     public String sentFakeMessage(String messageText, String recipientNumber){

@@ -1,8 +1,8 @@
 package com.smsservice.service;
 
-import com.smsservice.request.SmsRequest;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
+import com.smsservice.entity.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ public class SmsService {
     @Value("${twilio.phone_number}")
     private String PHONE_NUMBER;
 
-    public String sentMessage(SmsRequest smsRequest) {
-        return sentSms(smsRequest.getMessageText(), smsRequest.getRecipientNumber());
+    public String sentMessage(Notification notification) {
+        return sentSms(notification.getMessageText(), notification.getRecipientContact());
     }
 
     public String sentSms(String messageText, String recipientNumber){

@@ -1,4 +1,4 @@
-package com.fakemessageservice.request;
+package com.mailservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class FakeMessageRequest {
+@AllArgsConstructor
+public class Notification {
+    private String name;
     private String messageText;
     private String recipientContact;
 }
